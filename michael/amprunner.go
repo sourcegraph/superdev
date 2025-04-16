@@ -37,13 +37,6 @@ func init() {
 	rootCmd.AddCommand(runCmd)
 }
 
-func main() {
-	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-}
-
 // runAmpWithServer reads from a remote server, sends content to amp CLI,
 // and writes output back to the server
 func runAmpWithServer() error {
