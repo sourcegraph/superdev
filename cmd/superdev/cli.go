@@ -1,7 +1,11 @@
 package superdev
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -25,13 +29,81 @@ func GetRootCmd() *cobra.Command {
 
 // InitCommands initializes all CLI commands
 func InitCommands() {
+	// Add flags to run command
+	runCmd.Flags().StringVar(&serverURL, "server", "http://localhost:8080", "Server URL to send the Docker image to")
+	runCmd.Flags().StringVar(&prompt, "prompt", "Hello from the CLI", "Prompt to send to the server")
+
 	rootCmd.AddCommand(runCmd)
 	rootCmd.AddCommand(serverCmd)
 }
 
+// sendImageToServer sends a request to the server with the Docker image and prompt
+func sendImageToServer(serverURL, dockerImage, prompt string) (string, error) {
+	// Create request body
+	requestBody := map[string]string{
+		"docker_image":    dockerImage,
+		"repository_link": "https://github.com/sourcegraph/amp.git", // Hardcoded for now
+		"prompt":         prompt,
+	}
+
+	// Convert request body to JSON
+	jsonData, err := json.Marshal(requestBody)
+	if err != nil {
+		return "", fmt.Errorf("failed to marshal JSON: %w", err)
+	}
+
+	// Create HTTP request
+	req, err := http.NewRequest("POST", serverURL+"/run", bytes.NewBuffer(jsonData))
+	if err != nil {
+		return "", fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set Content-Type header
+	req.Header.Set("Content-Type", "application/json")
+
+	// Send request
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("failed to send request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("failed to read response: %w", err)
+	}
+
+	// Check status code
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("server returned non-OK status: %d, body: %s", resp.StatusCode, string(respBody))
+	}
+
+	// Parse response JSON
+	var responseData struct {
+		Status   string `json:"status"`
+		Message  string `json:"message"`
+		ThreadID string `json:"thread_id"`
+	}
+
+	err = json.Unmarshal(respBody, &responseData)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse response JSON: %w", err)
+	}
+
+	// Return thread ID
+	return responseData.ThreadID, nil
+}
+
+var (
+	serverURL string
+	prompt    string
+)
+
 var runCmd = &cobra.Command{
 	Use:   "run [dockerfile]",
-	Short: "Build a Docker image from the specified Dockerfile",
+	Short: "Build a Docker image from the specified Dockerfile and send it to the server",
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		dockerfilePath := args[0]
@@ -166,5 +238,17 @@ CMD ["echo", "This image was wrapped by SuperDev with all requested tools instal
 		}
 		
 		fmt.Printf("Successfully built wrapped Docker image from %s\n", dockerfilePath)
+
+		// Use the server URL and prompt provided via flags
+		
+		fmt.Printf("Sending wrapped Docker image to the server...\n")
+		threadID, err := sendImageToServer(serverURL, "superdev-wrapped-image", prompt)
+		if err != nil {
+			fmt.Printf("Error sending image to server: %v\n", err)
+			os.Exit(1)
+		}
+		
+		fmt.Printf("Successfully sent image to server. Thread ID: %s\n", threadID)
+		fmt.Printf("To check status, use: curl -X GET \"http://localhost:8080/output?thread_id=%s\"\n", threadID)
 	},
 }
