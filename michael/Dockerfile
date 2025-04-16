@@ -45,6 +45,12 @@ VOLUME /workdir/repo
 RUN mkdir -p /workdir/guidance
 VOLUME /workdir/guidance
 
+RUN mkdir -p /workdir/connection
+VOLUME /workdir/connection
+
 WORKDIR /workdir
 
-CMD [ "sh", "-c", "echo $PROMPT | amp" ]
+COPY superdev-amprunner .
+RUN chmod +x superdev-amprunner
+
+CMD [ "./superdev-amprunner", "run", "--db", "./connection/amp.db" ]
