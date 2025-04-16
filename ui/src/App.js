@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
+import Spinner from './components/Spinner';
 
 const API_BASE_URL = 'http://localhost:8080';
 
@@ -193,7 +194,10 @@ function App() {
               </div>
               <div>
                 {thread.status === 'processing' && (
-                  <span className="loading-indicator">⏳ Updating...</span>
+                  <div className="loading-indicator">
+                    <Spinner imageUrl="/ampster.png" alt="Loading..." />
+                    <span style={{ marginLeft: '8px' }}>Updating...</span>
+                  </div>
                 )}
               </div>
             </div>
