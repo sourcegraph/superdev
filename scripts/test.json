@@ -1,0 +1,5 @@
+{
+  "docker_image": "superdev-wrapped-image",
+  "repository_link": "https://github.com/sourcegraph/amp.git",
+  "prompt": "Hello from a test prompt"
+}
