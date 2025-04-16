@@ -10,47 +10,77 @@ function App() {
   const [error, setError] = useState(null);
   const outputRefs = useRef({});
 
+  // Initial fetch of threads
   useEffect(() => {
+    let isMounted = true;
+    
     const fetchThreads = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/threads`);
+        if (!isMounted) return;
+        
         if (response.data && response.data.threads) {
-          // Compare thread IDs to see if anything has changed
-          const newThreadIds = response.data.threads.map(t => t.thread_id).sort().join(',');
-          const currentThreadIds = threads.map(t => t.thread_id).sort().join(',');
+          // Get the new threads and sort them consistently
+          const newThreads = [...response.data.threads].sort((a, b) => 
+            new Date(b.created_at) - new Date(a.created_at)
+          );
           
-          // Only update if the list of threads changed
-          if (newThreadIds !== currentThreadIds) {
-            setThreads(response.data.threads);
-          }
+          setThreads(newThreads);
         }
         setLoading(false);
       } catch (err) {
+        if (!isMounted) return;
         console.error('Error fetching threads:', err);
         setError('Failed to fetch threads. Please try again.');
         setLoading(false);
       }
     };
 
-    // Fetch threads initially
+    // Fetch threads only once on component mount
     fetchThreads();
 
-    // Set up polling every 1 second
-    const intervalId = setInterval(fetchThreads, 1000);
-
-    // Clean up interval on component unmount
-    return () => clearInterval(intervalId);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // Fetch thread outputs
+  // Fetch thread outputs and poll for updates
   useEffect(() => {
+    let isMounted = true;
+    
     const fetchThreadOutputs = async () => {
+      // First check if there are any new threads
+      try {
+        const threadsResponse = await axios.get(`${API_BASE_URL}/threads`);
+        if (!isMounted) return;
+        
+        if (threadsResponse.data && threadsResponse.data.threads) {
+          const serverThreads = threadsResponse.data.threads;
+          
+          // Compare thread lists
+          const serverIds = serverThreads.map(t => t.thread_id).sort();
+          const clientIds = threads.map(t => t.thread_id).sort();
+          
+          // Check if the lists are different
+          if (JSON.stringify(serverIds) !== JSON.stringify(clientIds)) {
+            // We have new threads or threads were removed - update the entire list
+            const sortedThreads = [...serverThreads].sort((a, b) => 
+              new Date(b.created_at) - new Date(a.created_at)
+            );
+            setThreads(sortedThreads);
+            return; // Exit this polling cycle, next one will fetch outputs
+          }
+        }
+      } catch (err) {
+        console.error('Error checking for new threads:', err);
+      }
+      
+      // Then fetch outputs for existing threads
       const updatedThreads = await Promise.all(
         threads.map(async (thread) => {
           try {
             const response = await axios.get(`${API_BASE_URL}/output?thread_id=${thread.thread_id}`);
-            // Only update if there are changes to avoid unnecessary re-renders
+            // Only update if there are content changes to avoid unnecessary re-renders
             if (response.data.status !== thread.status || 
                 response.data.output !== thread.output || 
                 response.data.error !== thread.error) {
@@ -69,19 +99,34 @@ function App() {
         })
       );
 
-      // Check if anything actually changed before updating state
-      const hasChanges = updatedThreads.some((updated, index) => 
-        updated.output !== threads[index].output || 
-        updated.status !== threads[index].status ||
-        updated.error !== threads[index].error
-      );
+      if (!isMounted) return;
 
-      if (hasChanges) {
-        setThreads(updatedThreads);
+      // Find threads with content changes
+      let contentChanged = false;
+      const updatedWithChanges = updatedThreads.map((updated, index) => {
+        const original = threads[index];
+        const hasChanged = 
+          updated.output !== original.output || 
+          updated.status !== original.status || 
+          updated.error !== original.error;
+        
+        if (hasChanged) contentChanged = true;
+        return updated;
+      });
+
+      if (contentChanged) {
+        // Keep the same order by using thread ID for stable sort
+        const sortedThreads = [...updatedWithChanges].sort((a, b) => 
+          new Date(b.created_at) - new Date(a.created_at)
+        );
+        
+        setThreads(sortedThreads);
         
         // Scroll to bottom of output for processing threads
         setTimeout(() => {
-          updatedThreads.forEach(thread => {
+          if (!isMounted) return;
+          
+          sortedThreads.forEach(thread => {
             if (thread.status === 'processing' && outputRefs.current[thread.thread_id]) {
               const outputElement = outputRefs.current[thread.thread_id];
               outputElement.scrollTop = outputElement.scrollHeight;
@@ -91,10 +136,20 @@ function App() {
       }
     };
 
+    // Initial fetch
     if (threads.length > 0) {
       fetchThreadOutputs();
     }
-  }, [threads]);
+    
+    // Set up polling
+    const intervalId = setInterval(fetchThreadOutputs, 1000);
+    
+    // Cleanup function
+    return () => {
+      isMounted = false;
+      clearInterval(intervalId);
+    };
+  }, [threads]);  // Re-create this effect when threads list changes
 
   if (loading) {
     return <div className="app">Loading threads...</div>;
