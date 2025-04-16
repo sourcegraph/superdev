@@ -1,0 +1,170 @@
+package superdev
+
+import (
+	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"text/template"
+
+	"github.com/spf13/cobra"
+)
+
+// Command variables
+var (
+	rootCmd = &cobra.Command{
+		Use:   "superdev",
+		Short: "SuperDev is a simple CLI tool",
+	}
+)
+
+// GetRootCmd returns the root command
+func GetRootCmd() *cobra.Command {
+	return rootCmd
+}
+
+// InitCommands initializes all CLI commands
+func InitCommands() {
+	rootCmd.AddCommand(runCmd)
+	rootCmd.AddCommand(serverCmd)
+}
+
+var runCmd = &cobra.Command{
+	Use:   "run [dockerfile]",
+	Short: "Build a Docker image from the specified Dockerfile",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		dockerfilePath := args[0]
+		
+		// Check if file exists
+		if _, err := os.Stat(dockerfilePath); os.IsNotExist(err) {
+			fmt.Printf("Error: Dockerfile not found at %s\n", dockerfilePath)
+			os.Exit(1)
+		}
+		
+		// Build Docker image
+		fmt.Printf("Building Docker image from %s...\n", dockerfilePath)
+		
+		// Execute docker build command
+		dockerCmd := exec.Command("docker", "build", "-f", dockerfilePath, "-t", "superdev-image", ".")
+		dockerCmd.Stdout = os.Stdout
+		dockerCmd.Stderr = os.Stderr
+		
+		err := dockerCmd.Run()
+		if err != nil {
+			fmt.Printf("Error building Docker image: %v\n", err)
+			os.Exit(1)
+		}
+		
+		fmt.Printf("Successfully built Docker image from %s\n", dockerfilePath)
+		
+		// Create a wrapper Dockerfile using a template
+		wrapperTemplate := `FROM ubuntu:latest as wrapper
+
+# Additional wrapper configuration
+LABEL wrapped.by="superdev"
+LABEL original.dockerfile="{{.OriginalFile}}"
+
+# Install Node.js 22 and npm
+RUN apt-get update && \
+    apt-get install -y curl gnupg2 && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && \
+    apt-get install -y nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install pnpm via npm
+RUN npm install -g pnpm
+
+# Install ripgrep
+RUN apt-get update && \
+    apt-get install -y ripgrep && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Setup PNPM environment
+RUN mkdir -p /usr/local/pnpm-global
+ENV PNPM_HOME=/usr/local/pnpm-global
+ENV PATH="$PNPM_HOME:$PNPM_HOME/node_modules/.bin:$PATH"
+ENV SHELL=/bin/bash
+
+# Install Sourcegraph AMP
+RUN pnpm setup && pnpm add -g @sourcegraph/amp
+
+# Create final image with original content included
+FROM superdev-image
+
+# Copy all installed tools from wrapper
+COPY --from=wrapper /usr/bin /usr/bin
+COPY --from=wrapper /usr/local /usr/local
+COPY --from=wrapper /usr/lib /usr/lib
+COPY --from=wrapper /usr/share /usr/share
+COPY --from=wrapper /lib /lib
+COPY --from=wrapper /etc/apt /etc/apt
+
+# Set environment variables
+ENV PNPM_HOME=/usr/local/pnpm-global
+ENV PATH="$PNPM_HOME:$PNPM_HOME/node_modules/.bin:$PATH"
+ENV SHELL=/bin/bash
+
+CMD ["echo", "This image was wrapped by SuperDev with all requested tools installed"]
+`
+		
+		// Create a temporary directory for the wrapper Dockerfile
+		tempDir, err := os.MkdirTemp("", "superdev-wrapper")
+		if err != nil {
+			fmt.Printf("Error creating temp directory: %v\n", err)
+			os.Exit(1)
+		}
+		defer os.RemoveAll(tempDir)
+		
+		// Create wrapper Dockerfile
+		wrapperPath := filepath.Join(tempDir, "Dockerfile.wrapper")
+		
+		// Parse and execute the template
+		tmpl, err := template.New("wrapper").Parse(wrapperTemplate)
+		if err != nil {
+			fmt.Printf("Error parsing template: %v\n", err)
+			os.Exit(1)
+		}
+		
+		// Create the wrapper Dockerfile
+		wrapperFile, err := os.Create(wrapperPath)
+		if err != nil {
+			fmt.Printf("Error creating wrapper Dockerfile: %v\n", err)
+			os.Exit(1)
+		}
+		defer wrapperFile.Close()
+		
+		// Execute the template with data
+		templateData := struct {
+			OriginalFile string
+		}{
+			OriginalFile: dockerfilePath,
+		}
+		
+		err = tmpl.Execute(wrapperFile, templateData)
+		if err != nil {
+			fmt.Printf("Error writing wrapper Dockerfile: %v\n", err)
+			os.Exit(1)
+		}
+		wrapperFile.Close()
+		
+		// Build the wrapped image
+		fmt.Println("Building wrapped Docker image...")
+		wrapperCmd := exec.Command("docker", "build", "-f", wrapperPath, "-t", "superdev-wrapped-image", ".")
+		wrapperCmd.Stdout = os.Stdout
+		wrapperCmd.Stderr = os.Stderr
+		
+		err = wrapperCmd.Run()
+		if err != nil {
+			fmt.Printf("Error building wrapped Docker image: %v\n", err)
+			os.Exit(1)
+		}
+		
+		fmt.Printf("Successfully built wrapped Docker image from %s\n", dockerfilePath)
+	},
+}
