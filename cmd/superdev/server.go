@@ -439,6 +439,17 @@ func handleStartContainerRequest(w http.ResponseWriter, r *http.Request) {
 		"thread_id": threadID,
 	}
 
+	if threads[threadID] == nil {
+		threads[threadID] = make([]*ThreadMessage, 0)
+	}
+
+	threads[threadID] = append(threads[threadID], &ThreadMessage{
+		ID:        time.Now().String(),
+		Direction: "output",
+		Output:    "I'm ready!",
+		CreatedAt: time.Now(),
+	})
+
 	json.NewEncoder(w).Encode(response)
 
 	// Create new thread output entry
@@ -554,13 +565,15 @@ func handleThreadsRequest(w http.ResponseWriter, r *http.Request) {
 	threadIDs := make([]string, 0, len(threads))
 	threadData := make([]map[string]interface{}, 0, len(threads))
 
-	for id, _ := range threads {
+	for id, messages := range threads {
 		threadIDs = append(threadIDs, id)
-		threadData = append(threadData, map[string]interface{}{
-			"thread_id":  id,
-			"status":     "output.Status",
-			"created_at": "output.CreatedAt",
-		})
+		if len(messages) > 0 {
+			threadData = append(threadData, map[string]interface{}{
+				"thread_id":  id,
+				"status":     messages[len(messages)-1].Status,
+				"created_at": time.Now(),
+			})
+		}
 	}
 	outputMutex.Unlock()
 
