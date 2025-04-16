@@ -2,16 +2,19 @@ package main
 
 import (
 	"bufio"
-	"database/sql"
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
+	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/spf13/cobra"
-	_ "modernc.org/sqlite" // Import for side effects
 )
 
 var rootCmd = &cobra.Command{
@@ -19,13 +22,11 @@ var rootCmd = &cobra.Command{
 	Short: "Runs Amp with interactivity",
 }
 
-var dbPath string
-
 var runCmd = &cobra.Command{
 	Use:   "run",
-	Short: "Runs Amp reading from and writing to an SQLite database",
+	Short: "Runs Amp reading from and writing to a remote server",
 	Run: func(cmd *cobra.Command, args []string) {
-		if err := runAmpWithSQLite(dbPath); err != nil {
+		if err := runAmpWithServer(); err != nil {
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
@@ -33,7 +34,6 @@ var runCmd = &cobra.Command{
 }
 
 func init() {
-	runCmd.Flags().StringVar(&dbPath, "db", "amp.db", "Path to the SQLite database file")
 	rootCmd.AddCommand(runCmd)
 }
 
@@ -44,44 +44,43 @@ func main() {
 	}
 }
 
-// runAmpWithSQLite reads from SQLite DB, sends content to amp CLI,
-// and writes output back to the DB
-func runAmpWithSQLite(dbPath string) error {
-	if _, err := os.Stat(dbPath); os.IsNotExist(err) {
-		fmt.Println("DB doesn't exist yet. Creating...")
+// runAmpWithServer reads from a remote server, sends content to amp CLI,
+// and writes output back to the server
+func runAmpWithServer() error {
+	serverURL := os.Getenv("SERVER_URL")
+	if serverURL == "" {
+		return fmt.Errorf("SERVER_URL environment variable is not set")
 	}
 
-	// Ensure the database exists and has the correct schema
-	db, err := initializeDatabase(dbPath)
-	if err != nil {
-		return fmt.Errorf("failed to initialize database: %w", err)
+	threadID := os.Getenv("THREAD_ID")
+	if threadID == "" {
+		return fmt.Errorf("THREAD_ID environment variable is not set")
 	}
-	defer db.Close()
 
-	// Get the last ID to use as a starting point
-	var lastID int64
-	//var count int
-	//row := db.QueryRow("SELECT COUNT(*), COALESCE(MAX(id), 0) FROM messages")
-	//if err := row.Scan(&count, &lastID); err != nil {
-	//	return fmt.Errorf("failed to get last message ID: %w", err)
-	//}
+	// Variable to track the last message ID we've processed
+	var lastMessageID string
+
+	var lock sync.Mutex
 
 	// Main processing loop
 	for {
 		// Check for new input messages
-		newInputs, err := collectNewMessages(db, lastID)
+		lock.Lock()
+		newMessages, err := pullMessages(serverURL, threadID, lastMessageID)
 		if err != nil {
 			return err
 		}
+		lock.Unlock()
 
 		// Process each new input message
-		for _, input := range newInputs {
-			fmt.Printf("Processing input #%d: %s\n", input.id, input.content)
-			lastID = input.id
+		for _, input := range newMessages {
+			fmt.Printf("Processing input: %s\n", input.Content)
+			lastMessageID = input.ID
 
+			// todo: we need to set that up earlier and then pipe input and output
 			// Create and set up the amp command
 			cmd := exec.Command("amp")
-			cmd.Stdin = bufio.NewReader(strings.NewReader(input.content))
+			cmd.Stdin = bufio.NewReader(strings.NewReader(input.Content))
 
 			// Capture stdout
 			stdout, err := cmd.StdoutPipe()
@@ -106,75 +105,108 @@ func runAmpWithSQLite(dbPath string) error {
 				return fmt.Errorf("amp command failed: %w", err)
 			}
 
-			// Save output to database with fresh connection
-			_, err = db.Exec("INSERT INTO messages (direction, content, thread_id) VALUES (?, ?, ?)", "output", output, "1")
+			// Send output to server
+			newLastMessageID, err := answerMessage(serverURL, threadID, output)
 			if err != nil {
-				return fmt.Errorf("failed to save output to database: %w", err)
+				return fmt.Errorf("failed to send output to server: %w", err)
 			}
 
-			fmt.Printf("Saved output to database: %s\n", output)
+			// Update last message ID
+			lastMessageID = newLastMessageID
+
+			fmt.Printf("Sent output to server: %s\n", output)
 		}
 
 		// Sleep before next check
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(time.Second)
 	}
 }
 
-func collectNewMessages(db *sql.DB, lastID int64) ([]struct {
-	id      int64
-	content string
-}, error) {
-	fmt.Println("Checking for new messages at ", time.Now().Format("2006-01-02 15:04:05"))
-
-	rows, err := db.Query("SELECT id, content FROM messages WHERE id > ? AND direction = 'input' AND thread_id = '1' ORDER BY id ASC", lastID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to query for new messages: %w", err)
-	}
-	defer rows.Close()
-
-	var newInputs []struct {
-		id      int64
-		content string
-	}
-
-	for rows.Next() {
-		var id int64
-		var content string
-		if err := rows.Scan(&id, &content); err != nil {
-			return nil, fmt.Errorf("failed to scan message row: %w", err)
-		}
-		newInputs = append(newInputs, struct {
-			id      int64
-			content string
-		}{id, content})
-	}
-
-	fmt.Printf("Found %d new messages\n", len(newInputs))
-	return newInputs, nil
+// Message represents a message from the server
+type Message struct {
+	ID      string
+	Content string
 }
 
-// initializeDatabase ensures the database exists and has the correct schema
-func initializeDatabase(dbPath string) (*sql.DB, error) {
-	// Open database connection
-	db, err := sql.Open("sqlite", dbPath)
+// pullMessages fetches new messages from the server
+func pullMessages(serverURL, threadID, lastMessageID string) ([]Message, error) {
+	fmt.Println("Checking server for new messages at", time.Now().Format("2006-01-02 15:04:05"))
+
+	// Build the URL with query parameters
+	baseURL, err := url.Parse(serverURL + "/pullMessages")
 	if err != nil {
-		return nil, fmt.Errorf("failed to open database: %w", err)
+		return nil, fmt.Errorf("invalid server URL: %w", err)
 	}
 
-	// Create the messages table if it doesn't exist
-	_, err = db.Exec(`
-		CREATE TABLE IF NOT EXISTS messages (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			thread_id TEXT NOT NULL,
-			direction TEXT NOT NULL,
-			content TEXT NOT NULL,
-			timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-		)
-	`)
+	// Add query parameters
+	params := url.Values{}
+	params.Add("thread_id", threadID)
+	if lastMessageID != "" {
+		params.Add("last_message_id", lastMessageID)
+	}
+	baseURL.RawQuery = params.Encode()
+
+	// Make the request
+	resp, err := http.Get(baseURL.String())
 	if err != nil {
-		db.Close()
-		return nil, fmt.Errorf("failed to create messages table: %w", err)
+		return nil, fmt.Errorf("failed to fetch messages: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("server returned error: %s", resp.Status)
 	}
 
-	return db, nil
+	// Parse the response
+	var messages []Message
+	if err := json.NewDecoder(resp.Body).Decode(&messages); err != nil {
+		return nil, fmt.Errorf("failed to decode server response: %w", err)
+	}
+
+	fmt.Printf("Found %d new messages\n", len(messages))
+	return messages, nil
+}
+
+// answerMessage sends the amp output back to the server
+func answerMessage(serverURL, threadID, output string) (string, error) {
+	// Prepare the request payload
+	payload := struct {
+		ThreadID string `json:"thread_id"`
+		Payload  string `json:"payload"`
+	}{
+		ThreadID: threadID,
+		Payload:  output,
+	}
+
+	// Convert payload to JSON
+	payloadBytes, err := json.Marshal(payload)
+	if err != nil {
+		return "", fmt.Errorf("failed to marshal payload: %w", err)
+	}
+
+	// Make POST request
+	resp, err := http.Post(
+		serverURL+"/answerMessage",
+		"application/json",
+		bytes.NewBuffer(payloadBytes),
+	)
+	if err != nil {
+		return "", fmt.Errorf("failed to send answer to server: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("server returned error: %s", resp.Status)
+	}
+
+	// Parse response to get lastMessageId
+	var response struct {
+		MessageID string `json:"message_id"`
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		return "", fmt.Errorf("failed to decode server response: %w", err)
+	}
+
+	return response.MessageID, nil
 }
