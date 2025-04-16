@@ -1,16 +1,16 @@
 # Validation Tests
 
-## Small
+## Unit tests
 ```
 go test ./lib/...
 ```
 
-## Medium
+## Integration tests
 ```
 
 ```
 
-## Large
+## E2E tests
 ```
 
 ```

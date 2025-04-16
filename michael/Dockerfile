@@ -3,6 +3,8 @@ FROM golang:1.23
 # Install git and repo requirements
 RUN apt-get update && apt-get install -y git ffmpeg && apt-get clean
 
+### Above is the provided docker image
+
 # Install Node.js 22 and npm
 RUN apt-get update && \
     apt-get install -y curl gnupg2 && \
