@@ -1,0 +1,14 @@
+{
+  "name": "superdev-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "ui"
+  ],
+  "scripts": {
+    "start": "pnpm --filter superdev-ui start",
+    "build": "pnpm --filter superdev-ui build",
+    "test": "pnpm --filter superdev-ui test",
+    "ui": "pnpm --filter superdev-ui"
+  }
+}
