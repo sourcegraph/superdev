@@ -392,6 +392,7 @@ func handleStartContainerRequest(w http.ResponseWriter, r *http.Request) {
 		ContextFiles   [][]byte `json:"contextFiles,omitempty"`
 		DockerImage    string   `json:"docker_image,omitempty"`
 		ServerUrl      string   `json:"server_url,omitempty"`
+		Prompt         string   `json:"prompt,omitempty"`
 	}
 
 	if err := json.Unmarshal(body, &req); err != nil {
@@ -445,8 +446,8 @@ func handleStartContainerRequest(w http.ResponseWriter, r *http.Request) {
 
 	threads[threadID] = append(threads[threadID], &ThreadMessage{
 		ID:        time.Now().String(),
-		Direction: "output",
-		Output:    "I'm ready!",
+		Direction: "input",
+		Output:    req.Prompt,
 		CreatedAt: time.Now(),
 	})
 

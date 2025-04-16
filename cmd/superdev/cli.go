@@ -43,7 +43,7 @@ func sendImageToServer(serverURL, dockerImage, prompt string) (string, error) {
 	requestBody := map[string]string{
 		"docker_image":    dockerImage,
 		"repository_link": "https://github.com/sourcegraph/amp.git", // Hardcoded for now
-		"prompt":         prompt,
+		"prompt":          prompt,
 	}
 
 	// Convert request body to JSON
@@ -53,7 +53,7 @@ func sendImageToServer(serverURL, dockerImage, prompt string) (string, error) {
 	}
 
 	// Create HTTP request
-	req, err := http.NewRequest("POST", serverURL+"/run", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", serverURL+"/start", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return "", fmt.Errorf("failed to create request: %w", err)
 	}
@@ -107,29 +107,29 @@ var runCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		dockerfilePath := args[0]
-		
+
 		// Check if file exists
 		if _, err := os.Stat(dockerfilePath); os.IsNotExist(err) {
 			fmt.Printf("Error: Dockerfile not found at %s\n", dockerfilePath)
 			os.Exit(1)
 		}
-		
+
 		// Build Docker image
 		fmt.Printf("Building Docker image from %s...\n", dockerfilePath)
-		
+
 		// Execute docker build command
 		dockerCmd := exec.Command("docker", "build", "-f", dockerfilePath, "-t", "superdev-image", ".")
 		dockerCmd.Stdout = os.Stdout
 		dockerCmd.Stderr = os.Stderr
-		
+
 		err := dockerCmd.Run()
 		if err != nil {
 			fmt.Printf("Error building Docker image: %v\n", err)
 			os.Exit(1)
 		}
-		
+
 		fmt.Printf("Successfully built Docker image from %s\n", dockerfilePath)
-		
+
 		// Create a wrapper Dockerfile using a template
 		wrapperTemplate := `FROM ubuntu:latest as wrapper
 
@@ -184,7 +184,7 @@ ENV SHELL=/bin/bash
 
 CMD ["echo", "This image was wrapped by SuperDev with all requested tools installed"]
 `
-		
+
 		// Create a temporary directory for the wrapper Dockerfile
 		tempDir, err := os.MkdirTemp("", "superdev-wrapper")
 		if err != nil {
@@ -192,17 +192,17 @@ CMD ["echo", "This image was wrapped by SuperDev with all requested tools instal
 			os.Exit(1)
 		}
 		defer os.RemoveAll(tempDir)
-		
+
 		// Create wrapper Dockerfile
 		wrapperPath := filepath.Join(tempDir, "Dockerfile.wrapper")
-		
+
 		// Parse and execute the template
 		tmpl, err := template.New("wrapper").Parse(wrapperTemplate)
 		if err != nil {
 			fmt.Printf("Error parsing template: %v\n", err)
 			os.Exit(1)
 		}
-		
+
 		// Create the wrapper Dockerfile
 		wrapperFile, err := os.Create(wrapperPath)
 		if err != nil {
@@ -210,44 +210,44 @@ CMD ["echo", "This image was wrapped by SuperDev with all requested tools instal
 			os.Exit(1)
 		}
 		defer wrapperFile.Close()
-		
+
 		// Execute the template with data
 		templateData := struct {
 			OriginalFile string
 		}{
 			OriginalFile: dockerfilePath,
 		}
-		
+
 		err = tmpl.Execute(wrapperFile, templateData)
 		if err != nil {
 			fmt.Printf("Error writing wrapper Dockerfile: %v\n", err)
 			os.Exit(1)
 		}
 		wrapperFile.Close()
-		
+
 		// Build the wrapped image
 		fmt.Println("Building wrapped Docker image...")
 		wrapperCmd := exec.Command("docker", "build", "-f", wrapperPath, "-t", "superdev-wrapped-image", ".")
 		wrapperCmd.Stdout = os.Stdout
 		wrapperCmd.Stderr = os.Stderr
-		
+
 		err = wrapperCmd.Run()
 		if err != nil {
 			fmt.Printf("Error building wrapped Docker image: %v\n", err)
 			os.Exit(1)
 		}
-		
+
 		fmt.Printf("Successfully built wrapped Docker image from %s\n", dockerfilePath)
 
 		// Use the server URL and prompt provided via flags
-		
+
 		fmt.Printf("Sending wrapped Docker image to the server...\n")
 		threadID, err := sendImageToServer(serverURL, "superdev-wrapped-image", prompt)
 		if err != nil {
 			fmt.Printf("Error sending image to server: %v\n", err)
 			os.Exit(1)
 		}
-		
+
 		fmt.Printf("Successfully sent image to server. Thread ID: %s\n", threadID)
 		fmt.Printf("To check status, use: curl -X GET \"http://localhost:8080/output?thread_id=%s\"\n", threadID)
 	},
