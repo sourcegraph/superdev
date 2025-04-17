@@ -1,0 +1,171 @@
+.thread-list-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.thread-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  table-layout: fixed;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.thread-list thead {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.thread-list th,
+.thread-list td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.thread-list th:first-child,
+.thread-list td:first-child {
+  width: 40%;
+}
+
+.thread-list th:nth-child(2),
+.thread-list td:nth-child(2) {
+  width: 20%;
+}
+
+.thread-list th:last-child,
+.thread-list td:last-child {
+  width: 40%;
+}
+
+.thread-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.thread-row:hover {
+  background-color: #f1f3f5;
+}
+
+.thread-id {
+  display: flex;
+  align-items: center;
+}
+
+.copy-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  padding: 0.25rem;
+  color: #6c757d;
+  font-size: 0.875rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.copy-button:hover {
+  opacity: 1;
+  color: #212529;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-processing {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #dee2e6;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #e9ecef;
+}
+
+.page-info {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: #6c757d;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .thread-list th:last-child,
+  .thread-list td:last-child {
+    display: none;
+  }
+  
+  .thread-list th:first-child,
+  .thread-list td:first-child,
+  .thread-list th:nth-child(2),
+  .thread-list td:nth-child(2) {
+    width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .thread-list-container {
+    padding: 0.5rem;
+  }
+  
+  .thread-list th,
+  .thread-list td {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .status-badge {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.75rem;
+  }
+}
