@@ -1,0 +1,334 @@
+import type { Anthropic } from '@anthropic-ai/sdk'
+import { truncate } from '../common/truncate'
+import { isToolRunTerminalState, type ToolRun } from '../tools/tool-service'
+import type { SerializedFileMentions } from './file-mentions'
+import type { MessageMetadata } from './metadata'
+import type { ThreadEnvironment } from './thread-env'
+import type { DebugUsage } from './thread-service'
+
+type UUID = `${string}-${string}-${string}-${string}-${string}`
+
+export type ThreadID = `T-${UUID}`
+
+/**
+ * ID for a tool use in a thread.
+ *
+ * It currently matches Anthropic's tool use ID format, but it should be treated as an
+ * opaque value.
+ */
+export type ThreadToolUseID = `toolu_${string}`
+
+export function newThreadID(): ThreadID {
+	return `T-${crypto.randomUUID()}`
+}
+
+export function isThreadID(id: string): id is ThreadID {
+	return id.startsWith('T-')
+}
+
+export function newThreadToolUseID(): ThreadToolUseID {
+	return `toolu_${crypto.randomUUID()}`
+}
+
+export function isThreadToolUseID(id: string): id is ThreadToolUseID {
+	return id.startsWith('toolu_')
+}
+
+export interface TextBlock {
+	type: 'text'
+	text: string
+}
+
+export interface ImageBlock {
+	type: 'image'
+	source:
+		| {
+				type: 'base64'
+				mediaType: 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
+				data: string
+		  }
+		| {
+				type: 'url'
+				url: string
+		  }
+}
+
+export type ToolUseBlock<T = Record<string, unknown>> = {
+	type: 'tool_use'
+	id: ThreadToolUseID
+	name: string
+} & (
+	| { input: T; inputPartialJSON?: undefined }
+
+	/** Only set while the block content is streaming in. */
+	| {
+			input?: PartialDeep<T> | undefined
+			inputPartialJSON: { json: string }
+	  }
+)
+
+export type ToolUseBlockComplete<T = Record<string, unknown>> = Extract<
+	ToolUseBlock<T>,
+	{ inputPartialJSON?: undefined }
+>
+
+export type ToolUseBlockIncomplete<T = Record<string, unknown>> = Extract<
+	ToolUseBlock<T>,
+	{ inputPartialJSON: { json: string } }
+>
+
+type PartialDeep<T> = {
+	[P in keyof T]?: T[P] extends object ? PartialDeep<T[P]> : T[P]
+}
+
+export interface ToolResultBlock {
+	type: 'tool_result'
+	toolUseID: ThreadToolUseID
+	run: ToolRun
+	userInput?: ToolRunUserInput | undefined
+}
+
+export interface ThinkingBlock {
+	type: 'thinking'
+	thinking: string
+	signature: string
+}
+
+export interface RedactedThinkingBlock {
+	type: 'redacted_thinking'
+	data: string
+}
+
+export interface ThreadUserMessage {
+	role: 'user'
+	content: (TextBlock | ImageBlock | ToolResultBlock)[]
+	fileMentions?: SerializedFileMentions | undefined
+	metadata?: MessageMetadata | undefined
+
+	// TODO!(sqs): add draftContent
+	// TODO!(sqs): add committed state
+}
+
+export type ThreadAssistantMessage = {
+	role: 'assistant'
+	content: (TextBlock | ThinkingBlock | RedactedThinkingBlock | ToolUseBlock)[]
+
+	state:
+		| { type: 'streaming' }
+		| { type: 'cancelled' }
+		| { type: 'error'; error: { message: string } }
+		| {
+				type: 'complete'
+
+				/**
+				 * The reason why the assistant stopped generating content, or `null` if the message is still
+				 * streaming in.
+				 */
+				stopReason: Anthropic.Message['stop_reason']
+		  }
+}
+
+export type ThreadMessage = ThreadUserMessage | ThreadAssistantMessage
+
+export interface Thread {
+	/** The thread ID. */
+	id: ThreadID
+
+	/** Unix timestamp of creation time (in UTC). */
+	created: number
+
+	/**
+	 * A monotonically increasing integer that represents the version of this data. Each time the
+	 * rest of the data structure changes, this field is incremented.
+	 */
+	v: number
+
+	/**
+	 * Title for the thread (possibly auto-generated).
+	 */
+	title?: string | undefined
+
+	/**
+	 * The thread ID of the original thread if this is a summary thread.
+	 */
+	originThreadID?: ThreadID | undefined
+
+	/**
+	 * Information about summary threads created from this thread.
+	 * Since a thread can be summarized multiple times, this is an array of summary thread IDs
+	 * along with the message count at which each summary was created.
+	 */
+	summaryThreads?: ThreadID[] | undefined
+
+	/**
+	 * The messages in the thread.
+	 */
+	messages: ThreadMessage[]
+
+	/**
+	 * Environment information about where the thread was created. Currently only supports the
+	 * initial environment.
+	 */
+	env?: {
+		initial: ThreadEnvironment
+	}
+
+	/**
+	 * Tools and their inputs that have been allow-listed for automatic acceptance.
+	 * First level: Map of tool name to input maps
+	 * Second level: Map of stringified input objects to boolean
+	 */
+	allowedInputs?: Record<string, Record<string, boolean>>
+
+	/** For debugging only. */
+	'~debug'?:
+		| {
+				/**
+				 * The last input to the model inference, which is useful because it includes the entire
+				 * system prompt and all of the parameters used.
+				 */
+				lastInferenceInput?: unknown
+				lastInferenceUsage?: DebugUsage
+		  }
+		| undefined
+}
+
+/**
+ * User input for tool execution.
+ */
+export interface ToolRunUserInput {
+	/** Whether the tool execution was accepted by the user. */
+	accepted: boolean
+
+	/** Whether to add this command to the allow list for automatic acceptance in the future. */
+	addToAllowList?: boolean
+}
+
+export function toolUseBlock(
+	thread: Pick<Thread, 'messages'>,
+	toolUseID: ThreadToolUseID,
+): ToolUseBlock | undefined {
+	for (const m of thread.messages) {
+		if (m.role !== 'assistant') {
+			continue
+		}
+		for (const b of m.content) {
+			if (b.type === 'tool_use' && b.id === toolUseID) {
+				return b
+			}
+		}
+	}
+	return undefined
+}
+
+export function findToolUseBlock(
+	thread: Pick<Thread, 'messages'>,
+	toolUseID: ThreadToolUseID,
+): {
+	message: ThreadAssistantMessage
+	messageIndex: number
+	block: ToolUseBlock
+	blockIndex: number
+} | null {
+	for (const [i, m] of thread.messages.entries()) {
+		if (m.role !== 'assistant') {
+			continue
+		}
+		for (const [j, b] of m.content.entries()) {
+			if (b.type === 'tool_use' && b.id === toolUseID) {
+				return { message: m, messageIndex: i, block: b, blockIndex: j }
+			}
+		}
+	}
+	return null
+}
+
+export function toolResultBlock(
+	thread: Pick<Thread, 'messages'>,
+	toolUseID: ThreadToolUseID,
+): ToolResultBlock | undefined {
+	for (const m of thread.messages) {
+		if (m.role !== 'user') {
+			continue
+		}
+		for (const b of m.content) {
+			if (b.type === 'tool_result' && b.toolUseID === toolUseID) {
+				return b
+			}
+		}
+	}
+	return undefined
+}
+
+export function toolResultBlocks(
+	thread: Pick<Thread, 'messages'>,
+): Map<ThreadToolUseID, ToolResultBlock> {
+	return thread.messages
+		.filter((m) => m.role === 'user')
+		.flatMap((m) => m.content)
+		.filter((b): b is ToolResultBlock => b.type === 'tool_result')
+		.reduce((acc, b) => {
+			acc.set(b.toolUseID, b)
+			return acc
+		}, new Map<ThreadToolUseID, ToolResultBlock>())
+}
+
+export type LastMessageToolUseInfo = {
+	blockId: ThreadToolUseID
+	status: ToolRun['status']
+}
+
+export function threadTitleOrUntitled(
+	thread: Pick<Thread, 'title'> | Pick<ThreadEntry, 'title'>,
+	untitled = 'Untitled',
+): string {
+	if (thread.title) {
+		return truncate(thread.title, 300)
+	}
+	return untitled
+}
+
+/**
+ * Only the fields needed to show a thread as an item in a list.
+ */
+export interface ThreadEntry extends Pick<Thread, 'id' | 'v' | 'created'> {
+	title: string | null
+}
+
+export function combinedTextContent(
+	blocks: ThreadMessage['content'] | Anthropic.Messages.ContentBlock[],
+): string {
+	return blocks
+		.map((b) => (b.type === 'text' ? b.text : null))
+		.filter((v) => v !== null)
+		.join('\n\n')
+}
+
+export function isUserMessageCommitted(message: ThreadUserMessage): boolean {
+	return message.content.every(
+		(b) => !(b.type === 'tool_result' && !isToolRunTerminalState(b.run)),
+	)
+}
+
+type MessageRole = ThreadMessage['role']
+
+export function lastMessageOfRole<R extends MessageRole>(
+	thread: Pick<Thread, 'messages'>,
+	role: R,
+): Extract<ThreadMessage, { role: R }> | undefined {
+	return thread.messages.findLast(
+		(m): m is Extract<ThreadMessage, { role: R }> => m.role === role,
+	)
+}
+
+/**
+ * Count the number of messages in the thread, excluding empty messages and tool_result user
+ * messages.
+ */
+export function logicalMessageCount(thread: Pick<Thread, 'messages'>): number {
+	return thread.messages.filter(
+		(m) =>
+			(m.role === 'assistant' && m.content.some((b) => b.type !== 'tool_use')) ||
+			(m.role === 'user' && m.content.some((b) => b.type !== 'tool_result')),
+	).length
+}

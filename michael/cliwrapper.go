@@ -159,17 +159,13 @@ func StartThreadWithPrompt(prompt string, duration time.Duration) (<-chan AmpIte
 		return nil, nil, fmt.Errorf("failed to observe thread: %w", err)
 	}
 
-	// Set up a context with cancellation for managing goroutines
-	var wg sync.WaitGroup
-	wg.Add(1)
-
 	// Start goroutine to process responses
 	go func() {
-		defer wg.Done()
 		defer close(ch)
 
 		startTime := time.Now()
-		for time.Since(startTime) < duration {
+		done := false
+		for time.Since(startTime) < duration && !done {
 			// Read next response
 			if !client.stdout.Scan() {
 				break
@@ -193,12 +189,159 @@ func StartThreadWithPrompt(prompt string, duration time.Duration) (<-chan AmpIte
 				if err := json.Unmarshal(dataBytes, &threadState); err == nil && threadState.State != "" {
 					// It's a AmpThreadState
 					ch <- threadState
+					
+					// If the inference state is idle, we're done
+					if threadState.State == "active" && threadState.InferenceState == "idle" {
+						// Thread is complete, break from the loop
+						done = true
+					}
 				} else {
 					// Try as a AmpThread
 					var thread AmpThread
 					if err := json.Unmarshal(dataBytes, &thread); err == nil && thread.ID != "" {
 						// It's a AmpThread
 						ch <- thread
+						
+						// Check if the thread has a completed state
+						if thread.State == "active" && thread.InferenceState == "idle" {
+							// Thread is complete, break from the loop
+							done = true
+						}
+					} else {
+						// Use generic for other types
+						var prettyData interface{}
+						json.Unmarshal(dataBytes, &prettyData)
+						ch <- AmpGenericItem{prettyData}
+					}
+				}
+			}
+		}
+	}()
+
+	// Return cleanup function
+	cleanup := func() {
+		client.Shutdown()
+	}
+
+	return ch, cleanup, nil
+}
+
+// ContinueThreadWithPrompt continues a thread with a prompt and existing messages
+func ContinueThreadWithPrompt(prompt string, threadID string, messages []AmpMessage, duration time.Duration) (<-chan AmpItem, func(), error) {
+	// Create channel for items
+	ch := make(chan AmpItem, 100) // Buffer to prevent blocking
+
+	// Create client
+	client, err := NewAmpClient()
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to create client: %w", err)
+	}
+
+	// Start thread worker
+	response, err := client.Call("startThreadWorker", []interface{}{threadID})
+	if err != nil {
+		client.Shutdown()
+		return nil, nil, fmt.Errorf("failed to start thread worker: %w", err)
+	}
+
+	// Parse the response to check if it was successful
+	var respObj AmpWorkerResponse
+	if err := json.Unmarshal([]byte(response), &respObj); err != nil {
+		client.Shutdown()
+		return nil, nil, fmt.Errorf("failed to parse start response: %w", err)
+	}
+
+	if respObj.StreamEvent != "next" {
+		client.Shutdown()
+		return nil, nil, fmt.Errorf("unexpected start response: %s", response)
+	}
+
+	// Serialize all previous messages into a single string
+	history := SerializeMessages(messages)
+	
+	// Create single user message with both history and new prompt
+	combinedPrompt := fmt.Sprintf("Previous conversation:\n\n%s\n\nNew question: %s", history, prompt)
+
+	// Create the delta with the combined message
+	delta := map[string]interface{}{
+		"type": "user:message",
+		"message": map[string]interface{}{
+			"content": []map[string]interface{}{
+				{
+					"type": "text",
+					"text": combinedPrompt,
+				},
+			},
+		},
+	}
+
+	// Send user message
+	response, err = client.Call("handleThreadDelta", []interface{}{threadID, delta})
+	if err != nil {
+		client.Shutdown()
+		return nil, nil, fmt.Errorf("failed to send user message: %w", err)
+	}
+
+	// Start observing thread
+	_, err = client.Call("observeThread", []interface{}{threadID})
+	if err != nil {
+		client.Shutdown()
+		return nil, nil, fmt.Errorf("failed to observe thread: %w", err)
+	}
+
+	// Set up a context with cancellation for managing goroutines
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	// Start goroutine to process responses
+	go func() {
+		defer wg.Done()
+		defer close(ch)
+
+		startTime := time.Now()
+		done := false
+		for time.Since(startTime) < duration && !done {
+			// Read next response
+			if !client.stdout.Scan() {
+				break
+			}
+
+			response := client.stdout.Text()
+
+			// Parse response as typed AmpWorkerResponse
+			var respObj AmpWorkerResponse
+			if err := json.Unmarshal([]byte(response), &respObj); err != nil {
+				ch <- AmpGenericItem{fmt.Sprintf("Error parsing response: %v", err)}
+				continue
+			}
+
+			// Check for thread data
+			if respObj.StreamEvent == "next" && respObj.Data != nil {
+				// First, try to parse as a AmpThreadState
+				var threadState AmpThreadState
+				dataBytes, _ := json.Marshal(respObj.Data)
+
+				if err := json.Unmarshal(dataBytes, &threadState); err == nil && threadState.State != "" {
+					// It's a AmpThreadState
+					ch <- threadState
+					
+					// If the inference state is idle, we're done
+					if threadState.State == "active" && threadState.InferenceState == "idle" {
+						// Thread is complete, break from the loop
+						done = true
+					}
+				} else {
+					// Try as a AmpThread
+					var thread AmpThread
+					if err := json.Unmarshal(dataBytes, &thread); err == nil && thread.ID != "" {
+						// It's a AmpThread
+						ch <- thread
+						
+						// Check if the thread has a completed state
+						if thread.State == "active" && thread.InferenceState == "idle" {
+							// Thread is complete, break from the loop
+							done = true
+						}
 					} else {
 						// Use generic for other types
 						var prettyData interface{}

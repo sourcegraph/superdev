@@ -103,6 +103,43 @@ func summarizeThinking(thinking string) string {
 	return thinking[:57] + "..."
 }
 
+// SerializeMessages converts an array of AmpMessages into a single string representation
+// of the conversation history
+func SerializeMessages(messages []AmpMessage) string {
+	var sb strings.Builder
+
+	for i, msg := range messages {
+		// Add a separator between messages
+		if i > 0 {
+			sb.WriteString("\n---\n")
+		}
+
+		// Add the role
+		sb.WriteString(fmt.Sprintf("%s: ", msg.Role))
+
+		// Add the content
+		for j, content := range msg.Content {
+			if j > 0 {
+				sb.WriteString("\n")
+			}
+
+			switch content.Type {
+			case "text":
+				sb.WriteString(content.Text)
+			case "thinking":
+				sb.WriteString(fmt.Sprintf("(thinking: %s)", content.Thinking))
+			case "tool_use":
+				toolData, _ := json.Marshal(content.Input)
+				sb.WriteString(fmt.Sprintf("(using tool: %s with input: %s)", content.Name, string(toolData)))
+			default:
+				sb.WriteString(fmt.Sprintf("(%s content)", content.Type))
+			}
+		}
+	}
+
+	return sb.String()
+}
+
 // Environment details
 type AmpEnv struct {
 	Initial AmpEnvInitial `json:"initial"`
@@ -137,6 +174,65 @@ type AmpMessage struct {
 	Content []AmpContent `json:"content"`
 	Role    string       `json:"role"`
 	State   *AmpState    `json:"state,omitempty"`
+}
+
+// ToDelta converts an AmpMessage to a ThreadDelta
+func (m AmpMessage) ToDelta() ThreadDelta {
+	// Convert AmpContent to map[string]interface{}
+	contents := make([]map[string]interface{}, len(m.Content))
+	
+	for i, content := range m.Content {
+		contentMap := map[string]interface{}{
+			"type": content.Type,
+		}
+		
+		// Add fields based on content type
+		if content.Text != "" {
+			contentMap["text"] = content.Text
+		}
+		if content.Thinking != "" {
+			contentMap["thinking"] = content.Thinking
+		}
+		if content.Name != "" {
+			contentMap["name"] = content.Name
+		}
+		if content.Input != nil {
+			contentMap["input"] = content.Input
+		}
+		if content.InputPartialJSON != nil {
+			contentMap["inputPartialJSON"] = content.InputPartialJSON
+		}
+		
+		contents[i] = contentMap
+	}
+	
+	// Create ThreadDelta based on role
+	if m.Role == "user" {
+		return ThreadDelta{
+			Type: ThreadDeltaUserMessage,
+			Message: &ThreadUserMessage{
+				Role:    m.Role,
+				Content: contents,
+			},
+		}
+	} else if m.Role == "assistant" {
+		return ThreadDelta{
+			Type: ThreadDeltaAssistantMessage,
+			AssistantMessage: &ThreadAssistantMessage{
+				Role:    m.Role,
+				Content: contents,
+			},
+		}
+	}
+	
+	// Default case (should not happen in normal use)
+	return ThreadDelta{
+		Type: ThreadDeltaUserMessage,
+		Message: &ThreadUserMessage{
+			Role:    m.Role,
+			Content: contents,
+		},
+	}
 }
 
 type AmpContent struct {
