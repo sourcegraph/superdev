@@ -1,4 +1,4 @@
-package main
+package superdev
 
 import (
 	"bufio"
@@ -189,7 +189,7 @@ func StartThreadWithPrompt(prompt string, duration time.Duration) (<-chan AmpIte
 				if err := json.Unmarshal(dataBytes, &threadState); err == nil && threadState.State != "" {
 					// It's a AmpThreadState
 					ch <- threadState
-					
+
 					// If the inference state is idle, we're done
 					if threadState.State == "active" && threadState.InferenceState == "idle" {
 						// Thread is complete, break from the loop
@@ -201,7 +201,7 @@ func StartThreadWithPrompt(prompt string, duration time.Duration) (<-chan AmpIte
 					if err := json.Unmarshal(dataBytes, &thread); err == nil && thread.ID != "" {
 						// It's a AmpThread
 						ch <- thread
-						
+
 						// Check if the thread has a completed state
 						if thread.State == "active" && thread.InferenceState == "idle" {
 							// Thread is complete, break from the loop
@@ -256,9 +256,12 @@ func ContinueThreadWithPrompt(prompt string, threadID string, messages []AmpMess
 		return nil, nil, fmt.Errorf("unexpected start response: %s", response)
 	}
 
+	// filter out messages that are 'thinking'
+	finishedMessages := FilterMessages(messages)
+
 	// Serialize all previous messages into a single string
-	history := SerializeMessages(messages)
-	
+	history := SerializeMessages(finishedMessages)
+
 	// Create single user message with both history and new prompt
 	combinedPrompt := fmt.Sprintf("Previous conversation:\n\n%s\n\nNew question: %s", history, prompt)
 
@@ -324,7 +327,7 @@ func ContinueThreadWithPrompt(prompt string, threadID string, messages []AmpMess
 				if err := json.Unmarshal(dataBytes, &threadState); err == nil && threadState.State != "" {
 					// It's a AmpThreadState
 					ch <- threadState
-					
+
 					// If the inference state is idle, we're done
 					if threadState.State == "active" && threadState.InferenceState == "idle" {
 						// Thread is complete, break from the loop
@@ -336,7 +339,7 @@ func ContinueThreadWithPrompt(prompt string, threadID string, messages []AmpMess
 					if err := json.Unmarshal(dataBytes, &thread); err == nil && thread.ID != "" {
 						// It's a AmpThread
 						ch <- thread
-						
+
 						// Check if the thread has a completed state
 						if thread.State == "active" && thread.InferenceState == "idle" {
 							// Thread is complete, break from the loop

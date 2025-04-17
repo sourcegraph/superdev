@@ -1,4 +1,4 @@
-package main
+package superdev
 
 import (
 	"fmt"

@@ -1,0 +1,491 @@
+[
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task -"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic,"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic, I'll create something simple but evocative."
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic, I'll create something simple but evocative.",
+        "signature": "ErUBCkYIAhgCIkDUGxkHYjW5msIc8FV51lVBscrd492Cdo/Ozz0F9KcHIhYcff1oGWf8R6VnvmeHO8Bhb98apQ8uNjBeqSIhChLDEgxJozf7nEGTlx2EYHsaDA2ExbgdX3VjtL2lAyIw2c0i1WSHMAL+o+k+kX17rcJjDAv1sXJ/HBEPFcvkN1w5/b0S0iSFTly0zGy6eBS3Kh3ExDGm9mtgbfbvpQBjC12Poxa/87irIaMYrh8PNQ=="
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic, I'll create something simple but evocative.",
+        "signature": "ErUBCkYIAhgCIkDUGxkHYjW5msIc8FV51lVBscrd492Cdo/Ozz0F9KcHIhYcff1oGWf8R6VnvmeHO8Bhb98apQ8uNjBeqSIhChLDEgxJozf7nEGTlx2EYHsaDA2ExbgdX3VjtL2lAyIw2c0i1WSHMAL+o+k+kX17rcJjDAv1sXJ/HBEPFcvkN1w5/b0S0iSFTly0zGy6eBS3Kh3ExDGm9mtgbfbvpQBjC12Poxa/87irIaMYrh8PNQ=="
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic, I'll create something simple but evocative.",
+        "signature": "ErUBCkYIAhgCIkDUGxkHYjW5msIc8FV51lVBscrd492Cdo/Ozz0F9KcHIhYcff1oGWf8R6VnvmeHO8Bhb98apQ8uNjBeqSIhChLDEgxJozf7nEGTlx2EYHsaDA2ExbgdX3VjtL2lAyIw2c0i1WSHMAL+o+k+kX17rcJjDAv1sXJ/HBEPFcvkN1w5/b0S0iSFTly0zGy6eBS3Kh3ExDGm9mtgbfbvpQBjC12Poxa/87irIaMYrh8PNQ=="
+      },
+      {
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic, I'll create something simple but evocative.",
+        "signature": "ErUBCkYIAhgCIkDUGxkHYjW5msIc8FV51lVBscrd492Cdo/Ozz0F9KcHIhYcff1oGWf8R6VnvmeHO8Bhb98apQ8uNjBeqSIhChLDEgxJozf7nEGTlx2EYHsaDA2ExbgdX3VjtL2lAyIw2c0i1WSHMAL+o+k+kX17rcJjDAv1sXJ/HBEPFcvkN1w5/b0S0iSFTly0zGy6eBS3Kh3ExDGm9mtgbfbvpQBjC12Poxa/87irIaMYrh8PNQ=="
+      },
+      {
+        "text": "Stars whisper secrets to the midnight sky,\nWhile",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic, I'll create something simple but evocative.",
+        "signature": "ErUBCkYIAhgCIkDUGxkHYjW5msIc8FV51lVBscrd492Cdo/Ozz0F9KcHIhYcff1oGWf8R6VnvmeHO8Bhb98apQ8uNjBeqSIhChLDEgxJozf7nEGTlx2EYHsaDA2ExbgdX3VjtL2lAyIw2c0i1WSHMAL+o+k+kX17rcJjDAv1sXJ/HBEPFcvkN1w5/b0S0iSFTly0zGy6eBS3Kh3ExDGm9mtgbfbvpQBjC12Poxa/87irIaMYrh8PNQ=="
+      },
+      {
+        "text": "Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic, I'll create something simple but evocative.",
+        "signature": "ErUBCkYIAhgCIkDUGxkHYjW5msIc8FV51lVBscrd492Cdo/Ozz0F9KcHIhYcff1oGWf8R6VnvmeHO8Bhb98apQ8uNjBeqSIhChLDEgxJozf7nEGTlx2EYHsaDA2ExbgdX3VjtL2lAyIw2c0i1WSHMAL+o+k+kX17rcJjDAv1sXJ/HBEPFcvkN1w5/b0S0iSFTly0zGy6eBS3Kh3ExDGm9mtgbfbvpQBjC12Poxa/87irIaMYrh8PNQ=="
+      },
+      {
+        "text": "Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic, I'll create something simple but evocative.",
+        "signature": "ErUBCkYIAhgCIkDUGxkHYjW5msIc8FV51lVBscrd492Cdo/Ozz0F9KcHIhYcff1oGWf8R6VnvmeHO8Bhb98apQ8uNjBeqSIhChLDEgxJozf7nEGTlx2EYHsaDA2ExbgdX3VjtL2lAyIw2c0i1WSHMAL+o+k+kX17rcJjDAv1sXJ/HBEPFcvkN1w5/b0S0iSFTly0zGy6eBS3Kh3ExDGm9mtgbfbvpQBjC12Poxa/87irIaMYrh8PNQ=="
+      },
+      {
+        "text": "Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "complete"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic, I'll create something simple but evocative.",
+        "signature": "ErUBCkYIAhgCIkDUGxkHYjW5msIc8FV51lVBscrd492Cdo/Ozz0F9KcHIhYcff1oGWf8R6VnvmeHO8Bhb98apQ8uNjBeqSIhChLDEgxJozf7nEGTlx2EYHsaDA2ExbgdX3VjtL2lAyIw2c0i1WSHMAL+o+k+kX17rcJjDAv1sXJ/HBEPFcvkN1w5/b0S0iSFTly0zGy6eBS3Kh3ExDGm9mtgbfbvpQBjC12Poxa/87irIaMYrh8PNQ=="
+      },
+      {
+        "text": "Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "complete"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "write me a 2 line poem",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for a very simple task - to write a 2-line poem. This doesn't require any tool use, just a creative response. I'll keep it concise as requested.\n\nI should provide a short, 2-line poem that is creative and engaging. Since they haven't specified a topic, I'll create something simple but evocative.",
+        "signature": "ErUBCkYIAhgCIkDUGxkHYjW5msIc8FV51lVBscrd492Cdo/Ozz0F9KcHIhYcff1oGWf8R6VnvmeHO8Bhb98apQ8uNjBeqSIhChLDEgxJozf7nEGTlx2EYHsaDA2ExbgdX3VjtL2lAyIw2c0i1WSHMAL+o+k+kX17rcJjDAv1sXJ/HBEPFcvkN1w5/b0S0iSFTly0zGy6eBS3Kh3ExDGm9mtgbfbvpQBjC12Poxa/87irIaMYrh8PNQ=="
+      },
+      {
+        "text": "Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "complete"
+    }
+  }
+]

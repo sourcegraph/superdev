@@ -33,8 +33,15 @@ func InitCommands() {
 	runCmd.Flags().StringVar(&serverURL, "server", "http://localhost:8080", "Server URL to send the Docker image to")
 	runCmd.Flags().StringVar(&prompt, "prompt", "Hello from the CLI", "Prompt to send to the server")
 
+	// Add flags to thread command
+	threadCmd.Flags().StringVar(&promptText, "prompt", "", "The prompt to send to the model (required)")
+	threadCmd.Flags().StringVar(&outputPath, "output", "", "Path to output file for thread messages (required)")
+	threadCmd.Flags().StringVar(&previousPath, "previous", "", "Path to file containing previous messages (optional)")
+	threadCmd.Flags().IntVar(&timeoutSecs, "timeout", 60, "Timeout in seconds for the thread (default: 60s)")
+
 	rootCmd.AddCommand(runCmd)
 	rootCmd.AddCommand(serverCmd)
+	rootCmd.AddCommand(threadCmd)
 }
 
 // sendImageToServer sends a request to the server with the Docker image and prompt

@@ -1,4 +1,4 @@
-package main
+package superdev
 
 import (
 	"encoding/json"
@@ -103,6 +103,39 @@ func summarizeThinking(thinking string) string {
 	return thinking[:57] + "..."
 }
 
+// FilterMessages filters out messages with only 'thinking' content
+func FilterMessages(messages []AmpMessage) []AmpMessage {
+	// filter out messages that are 'thinking'
+	finishedMessages := []AmpMessage{}
+	
+	// Loop through all messages
+	for _, msg := range messages {
+		// Create a new message without thinking content
+		filteredMsg := AmpMessage{
+			Role:  msg.Role,
+			State: msg.State,
+		}
+		
+		// Filter out thinking content
+		nonThinkingContent := []AmpContent{}
+		
+		// Only keep content that isn't just thinking
+		for _, content := range msg.Content {
+			if content.Type != "thinking" {
+				nonThinkingContent = append(nonThinkingContent, content)
+			}
+		}
+		
+		// If we have some content left after filtering out thinking, keep this message
+		if len(nonThinkingContent) > 0 {
+			filteredMsg.Content = nonThinkingContent
+			finishedMessages = append(finishedMessages, filteredMsg)
+		}
+	}
+	
+	return finishedMessages
+}
+
 // SerializeMessages converts an array of AmpMessages into a single string representation
 // of the conversation history
 func SerializeMessages(messages []AmpMessage) string {
@@ -180,12 +213,12 @@ type AmpMessage struct {
 func (m AmpMessage) ToDelta() ThreadDelta {
 	// Convert AmpContent to map[string]interface{}
 	contents := make([]map[string]interface{}, len(m.Content))
-	
+
 	for i, content := range m.Content {
 		contentMap := map[string]interface{}{
 			"type": content.Type,
 		}
-		
+
 		// Add fields based on content type
 		if content.Text != "" {
 			contentMap["text"] = content.Text
@@ -202,10 +235,10 @@ func (m AmpMessage) ToDelta() ThreadDelta {
 		if content.InputPartialJSON != nil {
 			contentMap["inputPartialJSON"] = content.InputPartialJSON
 		}
-		
+
 		contents[i] = contentMap
 	}
-	
+
 	// Create ThreadDelta based on role
 	if m.Role == "user" {
 		return ThreadDelta{
@@ -224,7 +257,7 @@ func (m AmpMessage) ToDelta() ThreadDelta {
 			},
 		}
 	}
-	
+
 	// Default case (should not happen in normal use)
 	return ThreadDelta{
 		Type: ThreadDeltaUserMessage,

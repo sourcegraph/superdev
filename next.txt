@@ -1,0 +1,381 @@
+[
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\"\n\nThe first word of"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\"\n\nThe first word of this poem is \"Stars\"."
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\"\n\nThe first word of this poem is \"Stars\".",
+        "signature": "ErUBCkYIAhgCIkBDtr3KdUx7JuanC4XoosKwdhSaZuO0CHr3Vp4emSlJVTQAr+X1gyPv7MUQde3p3raGOfJtni42L9dxco29v95MEgzqiLGCxCRqt82azw8aDMQx6BKCwYFmUuiIOSIw55bO/Ubawg0IA7iiQ5VbNaLYorhLETeEzqycMHtcp0CahuI1wc2IiW26CoJAYU7rKh08W3eKUPOlkc2N6JOIZgreC3EyuAGuLU51U+B8SA=="
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\"\n\nThe first word of this poem is \"Stars\".",
+        "signature": "ErUBCkYIAhgCIkBDtr3KdUx7JuanC4XoosKwdhSaZuO0CHr3Vp4emSlJVTQAr+X1gyPv7MUQde3p3raGOfJtni42L9dxco29v95MEgzqiLGCxCRqt82azw8aDMQx6BKCwYFmUuiIOSIw55bO/Ubawg0IA7iiQ5VbNaLYorhLETeEzqycMHtcp0CahuI1wc2IiW26CoJAYU7rKh08W3eKUPOlkc2N6JOIZgreC3EyuAGuLU51U+B8SA=="
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\"\n\nThe first word of this poem is \"Stars\".",
+        "signature": "ErUBCkYIAhgCIkBDtr3KdUx7JuanC4XoosKwdhSaZuO0CHr3Vp4emSlJVTQAr+X1gyPv7MUQde3p3raGOfJtni42L9dxco29v95MEgzqiLGCxCRqt82azw8aDMQx6BKCwYFmUuiIOSIw55bO/Ubawg0IA7iiQ5VbNaLYorhLETeEzqycMHtcp0CahuI1wc2IiW26CoJAYU7rKh08W3eKUPOlkc2N6JOIZgreC3EyuAGuLU51U+B8SA=="
+      },
+      {
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\"\n\nThe first word of this poem is \"Stars\".",
+        "signature": "ErUBCkYIAhgCIkBDtr3KdUx7JuanC4XoosKwdhSaZuO0CHr3Vp4emSlJVTQAr+X1gyPv7MUQde3p3raGOfJtni42L9dxco29v95MEgzqiLGCxCRqt82azw8aDMQx6BKCwYFmUuiIOSIw55bO/Ubawg0IA7iiQ5VbNaLYorhLETeEzqycMHtcp0CahuI1wc2IiW26CoJAYU7rKh08W3eKUPOlkc2N6JOIZgreC3EyuAGuLU51U+B8SA=="
+      },
+      {
+        "text": "Stars",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\"\n\nThe first word of this poem is \"Stars\".",
+        "signature": "ErUBCkYIAhgCIkBDtr3KdUx7JuanC4XoosKwdhSaZuO0CHr3Vp4emSlJVTQAr+X1gyPv7MUQde3p3raGOfJtni42L9dxco29v95MEgzqiLGCxCRqt82azw8aDMQx6BKCwYFmUuiIOSIw55bO/Ubawg0IA7iiQ5VbNaLYorhLETeEzqycMHtcp0CahuI1wc2IiW26CoJAYU7rKh08W3eKUPOlkc2N6JOIZgreC3EyuAGuLU51U+B8SA=="
+      },
+      {
+        "text": "Stars",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "streaming"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\"\n\nThe first word of this poem is \"Stars\".",
+        "signature": "ErUBCkYIAhgCIkBDtr3KdUx7JuanC4XoosKwdhSaZuO0CHr3Vp4emSlJVTQAr+X1gyPv7MUQde3p3raGOfJtni42L9dxco29v95MEgzqiLGCxCRqt82azw8aDMQx6BKCwYFmUuiIOSIw55bO/Ubawg0IA7iiQ5VbNaLYorhLETeEzqycMHtcp0CahuI1wc2IiW26CoJAYU7rKh08W3eKUPOlkc2N6JOIZgreC3EyuAGuLU51U+B8SA=="
+      },
+      {
+        "text": "Stars",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "complete"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\"\n\nThe first word of this poem is \"Stars\".",
+        "signature": "ErUBCkYIAhgCIkBDtr3KdUx7JuanC4XoosKwdhSaZuO0CHr3Vp4emSlJVTQAr+X1gyPv7MUQde3p3raGOfJtni42L9dxco29v95MEgzqiLGCxCRqt82azw8aDMQx6BKCwYFmUuiIOSIw55bO/Ubawg0IA7iiQ5VbNaLYorhLETeEzqycMHtcp0CahuI1wc2IiW26CoJAYU7rKh08W3eKUPOlkc2N6JOIZgreC3EyuAGuLU51U+B8SA=="
+      },
+      {
+        "text": "Stars",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "complete"
+    }
+  },
+  {
+    "content": [
+      {
+        "text": "Previous conversation:\n\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nuser: write me a 2 line poem\n---\nassistant: \n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n---\nuser: write me a 2 line poem\n---\nassistant: Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\n\nNew question: tell me the first word",
+        "type": "text"
+      }
+    ],
+    "role": "user"
+  },
+  {
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user is asking for the first word of the 2-line poem I've been repeatedly sharing. The poem was:\n\n\"Stars whisper secrets to the midnight sky,\nWhile dreams take flight on wings that never lie.\"\n\nThe first word of this poem is \"Stars\".",
+        "signature": "ErUBCkYIAhgCIkBDtr3KdUx7JuanC4XoosKwdhSaZuO0CHr3Vp4emSlJVTQAr+X1gyPv7MUQde3p3raGOfJtni42L9dxco29v95MEgzqiLGCxCRqt82azw8aDMQx6BKCwYFmUuiIOSIw55bO/Ubawg0IA7iiQ5VbNaLYorhLETeEzqycMHtcp0CahuI1wc2IiW26CoJAYU7rKh08W3eKUPOlkc2N6JOIZgreC3EyuAGuLU51U+B8SA=="
+      },
+      {
+        "text": "Stars",
+        "type": "text"
+      }
+    ],
+    "role": "assistant",
+    "state": {
+      "type": "complete"
+    }
+  }
+]

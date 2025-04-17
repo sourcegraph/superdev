@@ -1,4 +1,4 @@
-package main
+package superdev
 
 // ThreadDeltaType defines the possible types of thread deltas
 type ThreadDeltaType string
