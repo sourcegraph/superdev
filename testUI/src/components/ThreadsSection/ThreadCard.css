@@ -1,28 +1,27 @@
 .thread-card {
-  border: 1px solid #ddd;
+  border: 1px solid #333;
   border-radius: 4px;
   padding: 15px;
-  flex: 1;
-  min-width: 300px;
-  max-width: calc(33.333% - 10px); /* Account for gap between cards */
+  flex: 0 0 calc(30% - 10px); /* Significantly narrower to prevent overlap */
+  width: calc(30% - 10px);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
-  margin-bottom: 15px; /* Add spacing between rows */
+  margin-bottom: 0; /* Remove margin as thread-row already has margin */
 }
 
 @keyframes blinkBorder {
-  0% { border-color: #2ecc71; border-width: 1px; box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
-  50% { border-color: #2ecc71; border-width: 3px; box-shadow: 0 0 15px rgba(46, 204, 113, 0.8); }
-  100% { border-color: #2ecc71; border-width: 1px; box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
+  0% { border-color: #ff0000; border-width: 1px; box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); }
+  50% { border-color: #ff0000; border-width: 3px; box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); }
+  100% { border-color: #ff0000; border-width: 1px; box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); }
 }
 
 .highlight-success {
   animation: blinkBorder 1s infinite;
-  border: 2px solid #2ecc71;
+  border: 2px solid #ff0000;
 }
 
 .thread-header {
@@ -48,22 +47,53 @@
 }
 
 .status-decal.failed {
-  background-color: #e74c3c;
+  background-color: #ff0000;
 }
 
 .status-decal.needs-feedback {
-  background-color: #f39c12;
+  background-color: #3498db;
 }
 
 .status-decal.completed {
   background-color: #2ecc71;
 }
 
+/* Running state styles */
+.thread-card.running {
+  border-color: #000000;
+  background-color: #f0f0f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.thread-card.running::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(to right, transparent, #ff0000, transparent);
+  animation: cardLoading 1.5s infinite;
+}
+
+@keyframes cardLoading {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Placeholder for empty thread cards to maintain consistent layout */
+.thread-card-placeholder {
+  flex: 0 0 calc(30% - 10px);
+  width: calc(30% - 10px);
+  visibility: hidden;
+}
+
 .thread-content {
-  border: 1px solid #eee;
+  border: 1px solid #333;
   border-radius: 4px;
   padding: 10px;
-  background-color: #f9f9f9;
+  background-color: #f0f0f0;
   font-family: monospace;
   font-size: 0.9rem;
   min-height: 100px;
@@ -71,10 +101,23 @@
   overflow-y: auto;
   box-sizing: border-box;
   width: 100%;
+  color: #333;
 }
 
 .content-line {
   line-height: 1.4;
+}
+
+@keyframes blink {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+.typing-indicator {
+  color: #ff0000;
+  animation: blink 1s infinite;
+  font-weight: bold;
 }
 
 .feedback-section {
@@ -87,10 +130,12 @@
   width: 100%;
   min-height: 60px;
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #333;
   border-radius: 4px;
   resize: vertical;
   box-sizing: border-box; /* Include padding and border in the element's width */
+  background-color: #f8f8f8;
+  font-family: monospace;
 }
 
 .feedback-actions {
@@ -108,13 +153,16 @@
 
 .retry-button {
   padding: 6px 12px;
-  background-color: #3498db;
-  color: white;
-  border: none;
+  background-color: #ffffff;
+  color: #ff0000;
+  border: 1px solid #ff0000;
   border-radius: 4px;
   cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: bold;
 }
 
 .retry-button:hover {
-  background-color: #2980b9;
+  background-color: #f8f8f8;
 }

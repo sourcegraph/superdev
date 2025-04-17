@@ -16,25 +16,7 @@ interface Thread {
 const ThreadsSection: React.FC = () => {
   const { animationStarted, setAnimationStarted, hideThread, setHideThread, setHighlightNewPR, dynamicThreads } = useAnimation();
   
-  // Start animation sequence after 5 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      // Step 1: Highlight Thread 3
-      setAnimationStarted(true);
-      
-      // Step 2: Hide Thread 3 after 2 seconds
-      setTimeout(() => {
-        setHideThread(true);
-        
-        // Step 3: Add new PR immediately after
-        setTimeout(() => {
-          setHighlightNewPR(true);
-        }, 200); // Just a small delay for visual effect
-      }, 3000);
-    }, 5000);
-    
-    return () => clearTimeout(timer);
-  }, [setAnimationStarted, setHighlightNewPR, setHideThread]);
+  // Animation functionality is now triggered by the Run button in PromptSection
   // Mock thread data
   const [threads, setThreads] = useState<Thread[]>([
     { 
@@ -87,14 +69,26 @@ const ThreadsSection: React.FC = () => {
     return true;  
   });
   
-  // Combine the original threads with dynamic threads from the slider
-  const allThreads = [...visibleThreads, ...dynamicThreads];
+  // Only show dynamic threads created by the Run button
+  // Filter out Thread-104 when hideThread is true (after animation sequence)
+  const allThreads = dynamicThreads.filter(thread => {
+    if (hideThread && thread.id === 104) return false;
+    return true;
+  });
   
-  // Organize threads into rows of 3
+  // Organize threads into rows of 3 with placeholders to maintain layout
   const organizeThreadsIntoRows = (threads: Thread[]) => {
     const rows: Thread[][] = [];
     for (let i = 0; i < threads.length; i += 3) {
-      rows.push(threads.slice(i, i + 3));
+      // Get up to 3 threads for this row
+      const rowThreads = threads.slice(i, i + 3);
+      
+      // If we have fewer than 3 threads, add null placeholders for consistent width
+      while (rowThreads.length < 3) {
+        rowThreads.push(null as unknown as Thread);
+      }
+      
+      rows.push(rowThreads);
     }
     return rows;
   };
@@ -111,16 +105,20 @@ const ThreadsSection: React.FC = () => {
       <div className="threads-container">
         {threadRows.map((row, rowIndex) => (
           <div key={`row-${rowIndex}`} className="thread-row">
-            {row.map(thread => (
-              <ThreadCard 
-                key={thread.id} 
-                thread={thread} 
-                feedback={feedback[thread.id] || ''}
-                shareWithOthers={shareWithOthers[thread.id] || false}
-                onFeedbackChange={(value) => handleFeedbackChange(thread.id, value)}
-                onShareChange={(checked) => handleShareChange(thread.id, checked)}
-              />
-            ))}
+            {row.map(thread => 
+              thread ? (
+                <ThreadCard 
+                  key={thread.id} 
+                  thread={thread} 
+                  feedback={feedback[thread.id] || ''}
+                  shareWithOthers={shareWithOthers[thread.id] || false}
+                  onFeedbackChange={(value) => handleFeedbackChange(thread.id, value)}
+                  onShareChange={(checked) => handleShareChange(thread.id, checked)}
+                />
+              ) : (
+                <div key={Math.random()} className="thread-card-placeholder"></div>
+              )
+            )}
           </div>
         ))}
       </div>

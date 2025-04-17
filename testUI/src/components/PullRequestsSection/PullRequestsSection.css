@@ -95,13 +95,13 @@
 
 .pr-item.new-pr {
   animation: blinkBorder 1s infinite;
-  border: 2px solid #2ecc71;
+  border: 2px solid #ff0000;
 }
 
 @keyframes blinkBorder {
-  0% { border-color: #2ecc71; border-width: 1px; box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
-  50% { border-color: #2ecc71; border-width: 3px; box-shadow: 0 0 15px rgba(46, 204, 113, 0.8); }
-  100% { border-color: #2ecc71; border-width: 1px; box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
+  0% { border-color: #ff0000; border-width: 1px; box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); }
+  50% { border-color: #ff0000; border-width: 3px; box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); }
+  100% { border-color: #ff0000; border-width: 1px; box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); }
 }
 
 .pr-item:hover {

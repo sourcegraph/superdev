@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header/Header';
-import SearchBar from './components/SearchBar/SearchBar';
 import PromptSection from './components/PromptSection/PromptSection';
 import ThreadsSection from './components/ThreadsSection/ThreadsSection';
 import PullRequestsSection from './components/PullRequestsSection/PullRequestsSection';
@@ -15,7 +14,6 @@ function App() {
         <Header />
         <div className="main-content">
           <div className="left-panel">
-            <SearchBar />
             <PromptSection />
             <ThreadsSection />
           </div>

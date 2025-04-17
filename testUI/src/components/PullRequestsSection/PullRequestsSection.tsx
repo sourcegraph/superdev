@@ -82,11 +82,11 @@ const PullRequestsSection: React.FC = () => {
       // Increment total PRs when adding a new one
       setTotalPRsIssued(prev => prev + 1);
       const newPR = { 
-        id: 6, 
-        title: '(feat/ui): Update repo to Svelte 5, attempt 6', 
+        id: Math.floor(Math.random() * 1000) + 100, // Random ID to ensure uniqueness
+        title: 'Implement Sveltekit Marketing Site, Attempt 6', 
         repoName: 'sourcegraph/superdev', 
         baseBranch: 'main', 
-        prBranch: '(feat/ui): Update to svelte5, attempt 6', 
+        prBranch: 'feat/sveltekit-marketing-site', 
         url: 'https://github.com/sourcegraph/superdev/pull/2',
         isNew: true
       };
@@ -94,11 +94,14 @@ const PullRequestsSection: React.FC = () => {
       // Add the new PR to the beginning of the list (newest first)
       setPullRequests(prev => [newPR, ...prev]);
       
+      // Store the new PR ID for cleanup
+      const newPrId = newPR.id;
+      
       // Stop blinking after 5 seconds
       const stopBlinkTimer = setTimeout(() => {
         setPullRequests(prev => 
           prev.map(pr => 
-            pr.id === 6 ? { ...pr, isNew: false } : pr
+            pr.id === newPrId ? { ...pr, isNew: false } : pr
           )
         );
       }, 5000);

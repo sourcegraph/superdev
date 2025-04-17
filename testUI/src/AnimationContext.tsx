@@ -14,10 +14,9 @@ interface AnimationContextType {
   setHighlightNewPR: (highlight: boolean) => void;
   hideThread: boolean;
   setHideThread: (hide: boolean) => void;
-  // Thread management for slider demo
+  // Thread management
   dynamicThreads: Thread[];
   setDynamicThreads: (threads: Thread[]) => void;
-  addThreadFromPrompt: (prompt: string, iterationNumber: number) => void;
 }
 
 const AnimationContext = createContext<AnimationContextType>({
@@ -28,8 +27,7 @@ const AnimationContext = createContext<AnimationContextType>({
   hideThread: false,
   setHideThread: () => {},
   dynamicThreads: [],
-  setDynamicThreads: () => {},
-  addThreadFromPrompt: () => {}
+  setDynamicThreads: () => {}
 });
 
 export const useAnimation = () => useContext(AnimationContext);
@@ -44,29 +42,6 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
   const [hideThread, setHideThread] = useState(false);
   const [dynamicThreads, setDynamicThreads] = useState<Thread[]>([]);
   
-  // Function to create a new thread from a prompt
-  const addThreadFromPrompt = (prompt: string, iterationNumber: number) => {
-    const newThread: Thread = {
-      id: 100 + iterationNumber, // Use high IDs to avoid conflicts with existing threads
-      name: `Thread-${iterationNumber}`,
-      content: `Starting to process Iteration ${iterationNumber}...\nAnalyzing prompt: ${prompt.substring(0, 50)}...\nGenerating plan...\nExecuting plan...\nCompiling...`,
-      status: Math.random() > 0.7 ? 'completed' : (Math.random() > 0.5 ? 'needsFeedback' : 'running')
-    };
-    
-    // Add the new thread to the existing threads
-    setDynamicThreads(prev => {
-      // Check if this thread already exists
-      const exists = prev.some(t => t.id === newThread.id);
-      if (exists) {
-        // Replace the existing thread
-        return prev.map(t => t.id === newThread.id ? newThread : t);
-      } else {
-        // Add new thread
-        return [...prev, newThread];
-      }
-    });
-  };
-  
   return (
     <AnimationContext.Provider value={{
       animationStarted,
@@ -76,8 +51,7 @@ export const AnimationProvider: React.FC<AnimationProviderProps> = ({ children }
       hideThread,
       setHideThread,
       dynamicThreads,
-      setDynamicThreads,
-      addThreadFromPrompt
+      setDynamicThreads
     }}>
       {children}
     </AnimationContext.Provider>
