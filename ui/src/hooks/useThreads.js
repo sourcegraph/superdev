@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchThreads, fetchThreadOutput } from '../services/api';
 
 export const useThreads = () => {
@@ -13,6 +13,16 @@ export const useThreads = () => {
       new Date(b.created_at) - new Date(a.created_at)
     );
   };
+
+  // Get updated thread data
+  const getUpdatedThread = useCallback(async (threadId) => {
+    try {
+      return await fetchThreadOutput(threadId);
+    } catch (err) {
+      console.error(`Error fetching thread ${threadId}:`, err);
+      return null;
+    }
+  }, []);
 
   // Initial fetch of threads
   useEffect(() => {
@@ -111,21 +121,7 @@ export const useThreads = () => {
       });
 
       if (contentChanged) {
-        const sortedThreads = sortThreads(updatedWithChanges);
-        
-        setThreads(sortedThreads);
-        
-        // Scroll to bottom of output for processing threads
-        setTimeout(() => {
-          if (!isMounted) return;
-          
-          sortedThreads.forEach(thread => {
-            if (thread.status === 'processing' && outputRefs.current[thread.thread_id]) {
-              const outputElement = outputRefs.current[thread.thread_id];
-              outputElement.scrollTop = outputElement.scrollHeight;
-            }
-          });
-        }, 100);
+        setThreads(sortThreads(updatedWithChanges));
       }
     };
 
@@ -144,5 +140,5 @@ export const useThreads = () => {
     };
   }, [threads]);
 
-  return { threads, loading, error, outputRefs };
+  return { threads, loading, error, getUpdatedThread };
 };

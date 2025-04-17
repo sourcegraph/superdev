@@ -82,6 +82,173 @@
   margin-right: 8px;
 }
 
+/* Thread List */
+.threads-list {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.thread-list-item {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.thread-list-item:hover {
+  background-color: #f5f5f5;
+}
+
+.thread-list-item:last-child {
+  border-bottom: none;
+}
+
+.thread-item-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0; /* Needed for text truncation to work properly */
+}
+
+.status-indicator {
+  margin-right: 12px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-indicator.processing {
+  color: #f59e0b;
+  animation: pulse 1.5s infinite;
+}
+
+.status-indicator.completed {
+  color: #10b981;
+}
+
+.status-indicator.error {
+  color: #ef4444;
+}
+
+.thread-item-info {
+  flex: 1;
+  min-width: 0; /* Needed for text truncation */
+}
+
+.thread-item-id {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.thread-item-summary {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.thread-item-time {
+  font-size: 14px;
+  color: #888;
+  white-space: nowrap;
+  margin-left: 16px;
+}
+
+.no-threads-message {
+  padding: 32px;
+  text-align: center;
+  color: #666;
+}
+
+/* Thread Detail */
+.thread-detail {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px);
+}
+
+.thread-detail-header {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  background-color: #f8f8f8;
+}
+
+.back-button {
+  border: none;
+  background-color: #eee;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.back-button:hover {
+  background-color: #e0e0e0;
+}
+
+.thread-detail-title {
+  font-weight: 500;
+  font-size: 16px;
+  flex: 1;
+}
+
+.thread-detail-status {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+}
+
+.thread-detail-status.status-processing {
+  color: #f59e0b;
+}
+
+.thread-detail-status.status-completed {
+  color: #10b981;
+}
+
+.thread-detail-status.status-error {
+  color: #ef4444;
+}
+
+.thread-detail-meta {
+  padding: 10px 16px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #666;
+}
+
+.thread-detail-content {
+  padding: 16px;
+  flex: 1;
+  overflow: auto;
+  font-family: monospace;
+  white-space: pre-wrap;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #f8f8f8;
+}
+
+/* Keep existing thread card styles for backward compatibility */
 .threads-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
