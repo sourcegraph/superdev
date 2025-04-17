@@ -1,6 +1,7 @@
 import React from 'react';
 import './ThreadCard.css';
 import { ThreadStatus } from './ThreadsSection';
+import { useAnimation } from '../../AnimationContext';
 
 interface ThreadCardProps {
   thread: {
@@ -35,8 +36,11 @@ const ThreadCard: React.FC<ThreadCardProps> = ({
     }
   };
 
+  // Get animation context to control highlighting
+  const { animationStarted } = useAnimation();
+  
   return (
-    <div className={`thread-card ${thread.status}`}>
+    <div className={`thread-card ${thread.status} ${(thread.id === 3 && animationStarted) ? 'highlight-success' : ''}`}>
       <div className="thread-header">
         <h3>{thread.name}</h3>
         {/* Component 6: Status decal */}

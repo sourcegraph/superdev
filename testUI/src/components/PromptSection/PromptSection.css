@@ -27,8 +27,45 @@
   font-size: 0.9rem;
 }
 
+.slider-wrapper {
+  position: relative;
+  width: 80%; /* Make slider shorter than full width */
+  margin: 0; /* Left-aligned instead of centered */
+  height: 30px;
+  padding-bottom: 20px; /* Ensure the wrapper includes the marks */
+}
+
 .randomness-slider {
   width: 100%;
+  margin-bottom: 20px; /* Make space for labels below */
+  position: relative;
+  z-index: 10; /* Ensure slider is on top and clickable */
+}
+
+.slider-marks {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  z-index: 1; /* Keep marks below the slider */
+  pointer-events: none; /* Prevent marks from intercepting clicks */
+}
+
+.slider-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.slider-mark::before {
+  content: '';
+  width: 1px;
+  height: 5px;
+  background-color: #999;
+  margin-bottom: 2px;
 }
 
 .tooltip {

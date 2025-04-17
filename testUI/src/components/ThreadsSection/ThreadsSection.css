@@ -4,6 +4,17 @@
   gap: 10px;
 }
 
+.threads-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.thread-icon {
+  width: 20 px;
+  height: 20px;
+}
+
 .threads-section h2 {
   margin: 0;
   font-size: 1.2rem;
@@ -11,7 +22,15 @@
 
 .threads-container {
   display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* Create rows with max 3 threads per row */
+.thread-row {
+  display: flex;
   flex-wrap: nowrap;
   gap: 15px;
-  overflow-x: auto;
+  width: 100%;
+  margin-bottom: 15px;
 }

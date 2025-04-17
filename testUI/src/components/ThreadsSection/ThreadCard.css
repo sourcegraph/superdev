@@ -4,12 +4,25 @@
   padding: 15px;
   flex: 1;
   min-width: 300px;
-  max-width: 33.333%;
+  max-width: calc(33.333% - 10px); /* Account for gap between cards */
   display: flex;
   flex-direction: column;
   gap: 10px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  margin-bottom: 15px; /* Add spacing between rows */
+}
+
+@keyframes blinkBorder {
+  0% { border-color: #2ecc71; border-width: 1px; box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
+  50% { border-color: #2ecc71; border-width: 3px; box-shadow: 0 0 15px rgba(46, 204, 113, 0.8); }
+  100% { border-color: #2ecc71; border-width: 1px; box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
+}
+
+.highlight-success {
+  animation: blinkBorder 1s infinite;
+  border: 2px solid #2ecc71;
 }
 
 .thread-header {
@@ -56,6 +69,8 @@
   min-height: 100px;
   max-height: 200px;
   overflow-y: auto;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .content-line {
@@ -75,6 +90,7 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   resize: vertical;
+  box-sizing: border-box; /* Include padding and border in the element's width */
 }
 
 .feedback-actions {

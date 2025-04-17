@@ -10,7 +10,7 @@ const SearchBar: React.FC = () => {
         type="text" 
         id="search" 
         className="search-input" 
-        placeholder="Find all of my repositories that use a Node version < 22"
+        placeholder="Find all files in this repo that use any Svelte"
       />
     </div>
   );

@@ -5,7 +5,8 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 15px;
-  height: 100%;
+  height: calc(100% - 15px); /* Adjust height to account for top margin */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Added subtle shadow for depth */
 }
 
 .pr-status-bar {
@@ -22,24 +23,7 @@
   font-size: 1.1rem;
 }
 
-.pr-thermometer {
-  flex: 1;
-  height: 20px;
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.pr-thermometer-fill {
-  height: 100%;
-  background-color: #3498db;
-  transition: width 0.3s ease-in-out;
-}
-
-.pr-count {
-  font-weight: bold;
-  font-size: 1.1rem;
-}
+/* Simplified status bar without thermometer */
 
 .pr-list {
   display: flex;
@@ -50,13 +34,74 @@
 
 .pr-item {
   padding: 12px;
-  background-color: #f9f9f9;
-  border: 1px solid #eee;
-  border-radius: 4px;
+  background-color: #ffffff;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
   text-decoration: none;
-  color: #333;
-  font-weight: 500;
+  color: #24292e;
   transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pr-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #0366d6;
+}
+
+.pr-outlink-icon {
+  color: #6a737d;
+  font-size: 0.9rem;
+}
+
+.pr-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+}
+
+.pr-repo {
+  color: #586069;
+}
+
+.pr-branches {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pr-base-branch, .pr-head-branch {
+  background-color: #f1f8ff;
+  border: 1px solid #c8e1ff;
+  border-radius: 3px;
+  padding: 0 6px;
+  color: #0366d6;
+  font-family: monospace;
+}
+
+.branch-separator {
+  color: #586069;
+}
+
+.pr-item.new-pr {
+  animation: blinkBorder 1s infinite;
+  border: 2px solid #2ecc71;
+}
+
+@keyframes blinkBorder {
+  0% { border-color: #2ecc71; border-width: 1px; box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
+  50% { border-color: #2ecc71; border-width: 3px; box-shadow: 0 0 15px rgba(46, 204, 113, 0.8); }
+  100% { border-color: #2ecc71; border-width: 1px; box-shadow: 0 0 5px rgba(46, 204, 113, 0.5); }
 }
 
 .pr-item:hover {
