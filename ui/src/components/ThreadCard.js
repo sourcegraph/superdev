@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { processEscapeCodes } from '../utils/escapeCodeHandler';
 
 function ThreadCard({ thread, outputRefs }) {
@@ -16,7 +17,11 @@ function ThreadCard({ thread, outputRefs }) {
   return (
     <div key={thread.thread_id} className="thread-card">
       <div className="thread-header">
-        <h3 className="thread-title">Thread ID: {thread.thread_id.substring(0, 8)}...</h3>
+        <h3 className="thread-title">
+          <Link to={`/thread/${thread.thread_id}`} className="thread-link">
+            Thread ID: {thread.thread_id.substring(0, 8)}...
+          </Link>
+        </h3>
         <div className="thread-meta">
           <div title={new Date(thread.created_at).toLocaleString()}>
             Created: {new Date(thread.created_at).toLocaleTimeString()}
@@ -36,6 +41,9 @@ function ThreadCard({ thread, outputRefs }) {
           {thread.status === 'processing' && (
             <span className="loading-indicator">⏳ Updating...</span>
           )}
+          <Link to={`/thread/${thread.thread_id}`} className="view-details-link">
+            View Details
+          </Link>
         </div>
       </div>
     </div>

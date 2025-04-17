@@ -115,13 +115,15 @@ export const useThreads = () => {
         
         setThreads(sortedThreads);
         
-        // Scroll to bottom of output for processing threads
+        // Scroll to bottom of output for all threads with updated content
         setTimeout(() => {
           if (!isMounted) return;
           
-          sortedThreads.forEach(thread => {
-            if (thread.status === 'processing' && outputRefs.current[thread.thread_id]) {
-              const outputElement = outputRefs.current[thread.thread_id];
+          updatedThreads.forEach((updated, index) => {
+            const original = threads[index];
+            // Scroll if output changed (not just status)
+            if (updated.output !== original.output && outputRefs.current[updated.thread_id]) {
+              const outputElement = outputRefs.current[updated.thread_id];
               outputElement.scrollTop = outputElement.scrollHeight;
             }
           });

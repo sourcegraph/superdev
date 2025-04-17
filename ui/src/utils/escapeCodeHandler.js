@@ -15,8 +15,8 @@ const convert = new Convert({
     3: '#aa0',    // Yellow
     4: '#00a',    // Blue
     5: '#a0a',    // Magenta
-    6: '#0aa',    // Cyan
-    7: '#aaa',    // White
+    6: '#000',    // Black
+    7: '#000',    // Black
   }
 });
 
@@ -30,6 +30,7 @@ export function processEscapeCodes(text) {
   
   try {
     // Make sure reset codes are properly separated to create distinct spans
+    // eslint-disable-next-line no-control-regex
     const processedText = text.replace(/\u001b\[0m\s*\u001b\[/g, '\u001b[0m \u001b[');
     
     // Convert ANSI escape codes to HTML

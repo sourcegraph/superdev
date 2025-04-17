@@ -174,31 +174,55 @@ func handleRunRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("===== Starting thread %s processing =====\n", threadID)
 	os.Stdout.Sync()
 	// Process Docker execution in a goroutine
-	go func() {
-		// Set up Docker run command
-		output, err := runDockerContainer(threadID, req.RepositoryLink, req.ContextFiles, req.Prompt, req.DockerImage)
-
-		// Update thread output in memory
+	// Set up Docker run command
+	outputChan, err := runDockerContainer(threadID, req.RepositoryLink, req.ContextFiles, req.Prompt, req.DockerImage)
+	if err != nil {
+		// Update thread output in memory with error
 		outputMutex.Lock()
-		defer outputMutex.Unlock()
-
-		// Check if thread output still exists (might have been cleaned up)
 		threadOutput, exists := threadOutputs[threadID]
-		if !exists {
-			fmt.Printf("Warning: Thread %s was cleaned up before processing completed\n", threadID)
-			return
-		}
-
-		if err != nil {
+		if exists {
 			threadOutput.Status = "error"
 			threadOutput.Error = err.Error()
-			fmt.Printf("Error running Docker container for thread %s: %v\n", threadID, err)
-		} else {
-			threadOutput.Status = "completed"
-			threadOutput.Output = output
-			// Log output to console for now
-			fmt.Printf("Thread %s completed with output:\n%s\n", threadID, output)
 		}
+		outputMutex.Unlock()
+		fmt.Printf("Error setting up Docker container for thread %s: %v\n", threadID, err)
+		return
+	}
+
+	go func() {
+		// Process messages from channel
+		for msg := range outputChan {
+			// Check if it's an error message
+			if strings.HasPrefix(msg, "ERROR: ") {
+				outputMutex.Lock()
+				threadOutput, exists := threadOutputs[threadID]
+				if exists {
+					threadOutput.Status = "error"
+					threadOutput.Error = strings.TrimPrefix(msg, "ERROR: ")
+					// Append error to output as well
+					threadOutput.Output += "\nERROR: " + threadOutput.Error
+				}
+				outputMutex.Unlock()
+				continue
+			}
+
+			// Update thread output in memory with new message
+			outputMutex.Lock()
+			threadOutput, exists := threadOutputs[threadID]
+			if exists {
+				threadOutput.Output += msg + "\n"
+			}
+			outputMutex.Unlock()
+		}
+
+		// When channel is closed, mark as completed
+		outputMutex.Lock()
+		threadOutput, exists := threadOutputs[threadID]
+		if exists && threadOutput.Status != "error" {
+			threadOutput.Status = "completed"
+			fmt.Printf("Thread %s completed\n", threadID)
+		}
+		outputMutex.Unlock()
 	}()
 }
 
@@ -235,7 +259,7 @@ func handleOutputRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Add output or error depending on status
-	if threadOutput.Status == "completed" {
+	if threadOutput.Status != "error" {
 		response["output"] = threadOutput.Output
 	} else if threadOutput.Status == "error" {
 		response["error"] = threadOutput.Error
@@ -254,16 +278,16 @@ func handleThreadsRequest(w http.ResponseWriter, r *http.Request) {
 
 	// Lock for thread-safe access to output map
 	outputMutex.Lock()
-	
+
 	// Get all thread IDs
 	threadIDs := make([]string, 0, len(threadOutputs))
 	threadData := make([]map[string]interface{}, 0, len(threadOutputs))
-	
+
 	for id, output := range threadOutputs {
 		threadIDs = append(threadIDs, id)
 		threadData = append(threadData, map[string]interface{}{
-			"thread_id": id,
-			"status": output.Status,
+			"thread_id":  id,
+			"status":     output.Status,
 			"created_at": output.CreatedAt,
 		})
 	}
@@ -274,40 +298,43 @@ func handleThreadsRequest(w http.ResponseWriter, r *http.Request) {
 	// Return the list of thread IDs
 	response := map[string]interface{}{
 		"thread_ids": threadIDs,
-		"threads": threadData,
+		"threads":    threadData,
 	}
 
 	json.NewEncoder(w).Encode(response)
 }
 
-func runDockerContainer(threadID, repoLink string, contextFiles [][]byte, prompt string, dockerImage string) (string, error) {
+func runDockerContainer(threadID, repoLink string, contextFiles [][]byte, prompt string, dockerImage string) (chan string, error) {
 	// Create a buffer to store the output
 	var output bytes.Buffer
+
+	// Create output channel
+	outputChan := make(chan string)
 
 	// Create temporary directory for this execution
 	tempDir, err := os.MkdirTemp("", "superdev-"+threadID)
 	if err != nil {
-		return "", fmt.Errorf("failed to create temp directory: %w", err)
+		return nil, fmt.Errorf("failed to create temp directory: %w", err)
 	}
 	defer os.RemoveAll(tempDir) // Clean up after execution
 
 	// Create repo directory for volume mounting
 	repoDir := tempDir + "/repo"
 	if err := os.Mkdir(repoDir, 0755); err != nil {
-		return "", fmt.Errorf("failed to create repo directory: %w", err)
+		return nil, fmt.Errorf("failed to create repo directory: %w", err)
 	}
 
 	// Create guidance directory for context files
 	guidanceDir := tempDir + "/guidance"
 	if err := os.Mkdir(guidanceDir, 0755); err != nil {
-		return "", fmt.Errorf("failed to create guidance directory: %w", err)
+		return nil, fmt.Errorf("failed to create guidance directory: %w", err)
 	}
 
 	// Write context files to guidance directory
 	for i, fileContent := range contextFiles {
 		filePath := fmt.Sprintf("%s/context_%d.txt", guidanceDir, i)
 		if err := os.WriteFile(filePath, fileContent, 0644); err != nil {
-			return "", fmt.Errorf("failed to write context file %d: %w", i, err)
+			return nil, fmt.Errorf("failed to write context file %d: %w", i, err)
 		}
 	}
 
@@ -318,31 +345,31 @@ func runDockerContainer(threadID, repoLink string, contextFiles [][]byte, prompt
 	// Clone repository
 	fmt.Printf("===== Cloning repository for thread %s =====\n", threadID)
 	os.Stdout.Sync()
-	
+
 	cloneCmd := exec.Command("git", "clone", repoLink, repoDir)
-	
+
 	// Set up pipes for real-time output
 	cloneStdoutPipe, err := cloneCmd.StdoutPipe()
 	if err != nil {
-		return "", fmt.Errorf("failed to create stdout pipe for git clone: %w", err)
+		return nil, fmt.Errorf("failed to create stdout pipe for git clone: %w", err)
 	}
 	cloneStderrPipe, err := cloneCmd.StderrPipe()
 	if err != nil {
-		return "", fmt.Errorf("failed to create stderr pipe for git clone: %w", err)
+		return nil, fmt.Errorf("failed to create stderr pipe for git clone: %w", err)
 	}
-	
+
 	// Log the command being executed
 	fmt.Printf("Executing git clone: %s\n", strings.Join(cloneCmd.Args, " "))
 	os.Stdout.Sync()
-	
+
 	// Start the command
 	if err := cloneCmd.Start(); err != nil {
-		return "", fmt.Errorf("failed to start git clone: %w", err)
+		return nil, fmt.Errorf("failed to start git clone: %w", err)
 	}
-	
+
 	// Capture clone output
 	var cloneOutput bytes.Buffer
-	
+
 	// Process stdout
 	go func() {
 		scanner := bufio.NewScanner(cloneStdoutPipe)
@@ -353,7 +380,7 @@ func runDockerContainer(threadID, repoLink string, contextFiles [][]byte, prompt
 			cloneOutput.WriteString(line + "\n")
 		}
 	}()
-	
+
 	// Process stderr
 	go func() {
 		scanner := bufio.NewScanner(cloneStderrPipe)
@@ -364,45 +391,45 @@ func runDockerContainer(threadID, repoLink string, contextFiles [][]byte, prompt
 			cloneOutput.WriteString(line + "\n")
 		}
 	}()
-	
+
 	// Wait for clone to complete
 	if err := cloneCmd.Wait(); err != nil {
 		fmt.Printf("===== Git clone failed for thread %s =====\n", threadID)
-		return "", fmt.Errorf("failed to clone repository: %w, output: %s", err, cloneOutput.String())
+		return nil, fmt.Errorf("failed to clone repository: %w, output: %s", err, cloneOutput.String())
 	}
-	
+
 	fmt.Printf("===== Repository cloned successfully for thread %s =====\n", threadID)
 	os.Stdout.Sync()
 
 	// Pull latest from main branch
 	fmt.Printf("===== Pulling latest changes for thread %s =====\n", threadID)
 	os.Stdout.Sync()
-	
+
 	pullCmd := exec.Command("git", "pull", "origin", "main")
 	pullCmd.Dir = repoDir
-	
+
 	// Set up pipes for real-time output
 	pullStdoutPipe, err := pullCmd.StdoutPipe()
 	if err != nil {
-		return "", fmt.Errorf("failed to create stdout pipe for git pull: %w", err)
+		return nil, fmt.Errorf("failed to create stdout pipe for git pull: %w", err)
 	}
 	pullStderrPipe, err := pullCmd.StderrPipe()
 	if err != nil {
-		return "", fmt.Errorf("failed to create stderr pipe for git pull: %w", err)
+		return nil, fmt.Errorf("failed to create stderr pipe for git pull: %w", err)
 	}
-	
+
 	// Log the command being executed
 	fmt.Printf("Executing git pull: %s (in %s)\n", strings.Join(pullCmd.Args, " "), repoDir)
 	os.Stdout.Sync()
-	
+
 	// Start the command
 	if err := pullCmd.Start(); err != nil {
-		return "", fmt.Errorf("failed to start git pull: %w", err)
+		return nil, fmt.Errorf("failed to start git pull: %w", err)
 	}
-	
+
 	// Capture pull output
 	var pullOutput bytes.Buffer
-	
+
 	// Process stdout
 	go func() {
 		scanner := bufio.NewScanner(pullStdoutPipe)
@@ -413,7 +440,7 @@ func runDockerContainer(threadID, repoLink string, contextFiles [][]byte, prompt
 			pullOutput.WriteString(line + "\n")
 		}
 	}()
-	
+
 	// Process stderr
 	go func() {
 		scanner := bufio.NewScanner(pullStderrPipe)
@@ -424,37 +451,37 @@ func runDockerContainer(threadID, repoLink string, contextFiles [][]byte, prompt
 			pullOutput.WriteString(line + "\n")
 		}
 	}()
-	
+
 	// Wait for pull to complete
 	if err := pullCmd.Wait(); err != nil {
 		fmt.Printf("===== Git pull failed for thread %s =====\n", threadID)
-		return "", fmt.Errorf("failed to pull from main branch: %w, output: %s", err, pullOutput.String())
+		return nil, fmt.Errorf("failed to pull from main branch: %w, output: %s", err, pullOutput.String())
 	}
-	
+
 	fmt.Printf("===== Repository pull completed for thread %s =====\n", threadID)
 	os.Stdout.Sync()
 
 	// Get ANTHROPIC_API_KEY from environment
 	anthropicKey := os.Getenv("ANTHROPIC_API_KEY")
-	
+
 	// Prepare Docker run command
 	dockerArgs := []string{
 		"run",
 		"--rm",
-		"-v", repoDir+":/workdir/repo",
-		"-v", guidanceDir+":/workdir/guidance",
+		"-v", repoDir + ":/workdir/repo",
+		"-v", guidanceDir + ":/workdir/guidance",
 	}
-	
+
 	// Add ANTHROPIC_API_KEY as environment variable if available
 	if anthropicKey != "" {
 		dockerArgs = append(dockerArgs, "-e", "ANTHROPIC_API_KEY="+anthropicKey)
 	}
-	
+
 	// Add image and command
-	dockerArgs = append(dockerArgs, 
+	dockerArgs = append(dockerArgs,
 		dockerImage,
-		"sh", "-c", "echo '" + prompt + "' | amp")
-	
+		"sh", "-c", "echo '"+prompt+"' | amp")
+
 	// Create command
 	runCmd := exec.Command("docker", dockerArgs...)
 
@@ -465,16 +492,16 @@ func runDockerContainer(threadID, repoLink string, contextFiles [][]byte, prompt
 	// Set up pipes for real-time streaming
 	stdoutPipe, err := runCmd.StdoutPipe()
 	if err != nil {
-		return "", fmt.Errorf("failed to create stdout pipe: %w", err)
+		return nil, fmt.Errorf("failed to create stdout pipe: %w", err)
 	}
 	stderrPipe, err := runCmd.StderrPipe()
 	if err != nil {
-		return "", fmt.Errorf("failed to create stderr pipe: %w", err)
+		return nil, fmt.Errorf("failed to create stderr pipe: %w", err)
 	}
 
 	// Start the command
 	if err := runCmd.Start(); err != nil {
-		return "", fmt.Errorf("failed to start docker command: %w", err)
+		return nil, fmt.Errorf("failed to start docker command: %w", err)
 	}
 
 	fmt.Printf("===== Docker output for thread %s BEGIN =====\n", threadID)
@@ -488,6 +515,7 @@ func runDockerContainer(threadID, repoLink string, contextFiles [][]byte, prompt
 			fmt.Println(line)
 			os.Stdout.Sync()
 			output.WriteString(line + "\n")
+			outputChan <- line
 		}
 	}()
 
@@ -499,18 +527,25 @@ func runDockerContainer(threadID, repoLink string, contextFiles [][]byte, prompt
 			fmt.Println(line)
 			os.Stdout.Sync()
 			output.WriteString(line + "\n")
+			outputChan <- line
 		}
 	}()
 
-	// Wait for command to complete
-	if err := runCmd.Wait(); err != nil {
-		fmt.Printf("===== Docker output for thread %s END (with error) =====\n", threadID)
-		os.Stdout.Sync()
-		return output.String(), fmt.Errorf("error running Docker container: %w", err)
-	}
+	// Wait for command to complete in a separate goroutine
+	go func() {
+		if err := runCmd.Wait(); err != nil {
+			fmt.Printf("===== Docker output for thread %s END (with error) =====\n", threadID)
+			os.Stdout.Sync()
+			// Send error message to channel
+			outputChan <- "ERROR: " + err.Error()
+		} else {
+			fmt.Printf("===== Docker output for thread %s END (success) =====\n", threadID)
+			os.Stdout.Sync()
+		}
+		// Close the channel when done
+		close(outputChan)
+	}()
 
-	fmt.Printf("===== Docker output for thread %s END (success) =====\n", threadID)
-	os.Stdout.Sync()
-
-	return output.String(), nil
+	// Return the channel immediately
+	return outputChan, nil
 }

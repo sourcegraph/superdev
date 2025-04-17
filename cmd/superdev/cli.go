@@ -117,10 +117,9 @@ var runCmd = &cobra.Command{
 		// Build Docker image
 		fmt.Printf("Building Docker image from %s...\n", dockerfilePath)
 		
-		// Execute docker build command
-		dockerCmd := exec.Command("docker", "build", "-f", dockerfilePath, "-t", "superdev-image", ".")
-		dockerCmd.Stdout = os.Stdout
-		dockerCmd.Stderr = os.Stderr
+		// Execute docker build command in silent mode
+		dockerCmd := exec.Command("docker", "build", "-f", dockerfilePath, "-t", "superdev-image", "-q", ".")
+		// Docker commands run silently by default - don't attach stdout/stderr
 		
 		err := dockerCmd.Run()
 		if err != nil {
@@ -225,11 +224,10 @@ CMD ["echo", "This image was wrapped by SuperDev with all requested tools instal
 		}
 		wrapperFile.Close()
 		
-		// Build the wrapped image
+		// Build the wrapped image in silent mode
 		fmt.Println("Building wrapped Docker image...")
-		wrapperCmd := exec.Command("docker", "build", "-f", wrapperPath, "-t", "superdev-wrapped-image", ".")
-		wrapperCmd.Stdout = os.Stdout
-		wrapperCmd.Stderr = os.Stderr
+		wrapperCmd := exec.Command("docker", "build", "-f", wrapperPath, "-t", "superdev-wrapped-image", "-q", ".")
+		// Docker commands run silently by default - don't attach stdout/stderr
 		
 		err = wrapperCmd.Run()
 		if err != nil {
