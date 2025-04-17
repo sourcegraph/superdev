@@ -5,6 +5,7 @@ export interface Thread {
   name: string;
   content: string;
   status: 'running' | 'failed' | 'needsFeedback' | 'completed';
+  onClick?: () => void; // Add optional click handler
 }
 
 interface AnimationContextType {

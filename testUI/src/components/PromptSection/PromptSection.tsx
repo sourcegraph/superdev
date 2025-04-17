@@ -4,8 +4,24 @@ import { useAnimation, Thread } from '../../AnimationContext';
 
 const PromptSection: React.FC = () => {
   const { setDynamicThreads, setAnimationStarted, setHighlightNewPR, setHideThread } = useAnimation();
-  const [prompt, setPrompt] = useState('Act like a Senior Designer, your task is to generate a marketing site written in Sveltekit. This site will be the main vehicle through which you attract top talent and hype for your business, so it needs to be extremely beautiful, intuitive, and distinguished. Give me 4 versions I can evaluate.');
+  const [prompt, setPrompt] = useState('Act like a Senior Design Engineer, your task is to generate a marketing site written in Sveltekit. This site will be the main vehicle through which you attract top talent and hype for your business, so it needs to be extremely beautiful, intuitive, and distinguished. Give me 4 versions I can evaluate.');
   const [isRunning, setIsRunning] = useState(false);
+
+  // Function to handle clicking on the successful thread
+  const handleSuccessfulThreadClick = () => {
+    // Highlight the successful thread
+    setAnimationStarted(true);
+    
+    // Then, hide the thread and add a new PR after 2 seconds
+    setTimeout(() => {
+      setHideThread(true);
+      
+      // Add new PR immediately after hiding the thread
+      setTimeout(() => {
+        setHighlightNewPR(true);
+      }, 200); // Small delay for visual effect
+    }, 2000);
+  };
 
   const generateThreads = () => {
     // Set running state for visual feedback
@@ -42,7 +58,8 @@ const PromptSection: React.FC = () => {
         id: 104,
         name: 'Thread-104',
         content: `Analyzing prompt: ${prompt.substring(0, 50)}...\nGenerating design concepts...\nCreating Sveltekit project structure\nImplementing responsive design\nAdding animations\nOptimizing for performance\nCompleted: Design implemented successfully!`,
-        status: 'completed'
+        status: 'completed',
+        onClick: handleSuccessfulThreadClick // Add click handler directly to the thread object
       }
     ];
 
@@ -51,25 +68,10 @@ const PromptSection: React.FC = () => {
       setDynamicThreads(newThreads);
       // Reset running state after threads are generated
       setIsRunning(false);
-      
-      // Start animation sequence after threads appear
-      // First, highlight the successful thread after 5 seconds
-      setTimeout(() => {
-        setAnimationStarted(true);
-        
-        // Then, hide the thread and add a new PR after 2 seconds
-        setTimeout(() => {
-          setHideThread(true);
-          
-          // Add new PR immediately after hiding the thread
-          setTimeout(() => {
-            setHighlightNewPR(true);
-          }, 200); // Small delay for visual effect
-        }, 2000);
-      }, 5000);
-      
     }, 800); // Delay for visual effect
   };
+  
+
 
   return (
     <div className="prompt-section">

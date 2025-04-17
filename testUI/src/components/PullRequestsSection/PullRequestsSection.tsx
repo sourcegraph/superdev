@@ -29,43 +29,27 @@ const PullRequestsSection: React.FC = () => {
   const _initialData = [
     { 
       id: 1, 
-      title: '(feat/ui): Update repo to Svelte 5, attempt 1', 
+      title: 'Implement Svelkit Marketing Site, Attempt 1', 
       repoName: 'sourcegraph/superdev', 
       baseBranch: 'main', 
-      prBranch: '(feat/ui): Update repo to Svelte 5, attempt 1', 
+      prBranch: 'attempt-1', 
       url: 'https://github.com/sourcegraph/superdev/pull/123' 
     },
     {
       id: 2, 
-      title: '(feat/ui): Update repo to Svelte 5, attempt 2', 
+      title: 'Implement Svelkit Marketing Site, Attempt 2', 
       repoName: 'sourcegraph/superdev', 
       baseBranch: 'main', 
-      prBranch: '(feat/ui): Update repo to Svelte 5, attempt 2', 
+      prBranch: 'attempt-2', 
       url: 'https://github.com/sourcegraph/superdev/pull/456' 
     },
     { 
       id: 3, 
-      title: '(feat/ui): Update repo to Svelte 5, attempt 3', 
+      title: 'Implement Svelkit Marketing Site, Attempt 3', 
       repoName: 'sourcegraph/superdev', 
       baseBranch: 'main', 
-      prBranch: '(feat/ui): Update repo to Svelte 5, attempt 3', 
+      prBranch: 'attempt-3', 
       url: 'https://github.com/sourcegraph/superdev/pull/3' 
-    },
-    { 
-      id: 4, 
-      title: '(feat/ui): Update repo to Svelte 5, attempt 4', 
-      repoName: 'sourcegraph/superdev', 
-      baseBranch: 'main', 
-      prBranch: '(feat/ui): Update repo to Svelte 5, attempt 4', 
-      url: 'https://github.com/sourcegraph/superdev/pull/101' 
-    },
-    { 
-      id: 5, 
-      title: '(feat/ui): Update repo to Svelte 5, attempt 5', 
-      repoName: 'sourcegraph/superdev', 
-      baseBranch: 'main', 
-      prBranch: '(feat/ui): Update repo to Svelte 5, attempt 5', 
-      url: 'https://github.com/sourcegraph/superdev/pull/112' 
     },
   ];
   
@@ -74,7 +58,7 @@ const PullRequestsSection: React.FC = () => {
   initialPullRequests.push(..._initialData.sort((a, b) => b.id - a.id));
   
   // Track total PRs to display in status bar
-  const [totalPRsIssued, setTotalPRsIssued] = useState<number>(5);
+  const [totalPRsIssued, setTotalPRsIssued] = useState<number>(3);
   
   // Add a new PR when highlightNewPR becomes true
   useEffect(() => {
@@ -83,10 +67,10 @@ const PullRequestsSection: React.FC = () => {
       setTotalPRsIssued(prev => prev + 1);
       const newPR = { 
         id: Math.floor(Math.random() * 1000) + 100, // Random ID to ensure uniqueness
-        title: 'Implement Sveltekit Marketing Site, Attempt 6', 
+        title: 'Implement Sveltekit Marketing Site, Attempt 4', 
         repoName: 'sourcegraph/superdev', 
         baseBranch: 'main', 
-        prBranch: 'feat/sveltekit-marketing-site', 
+        prBranch: 'attemp-4', 
         url: 'https://github.com/sourcegraph/superdev/pull/2',
         isNew: true
       };

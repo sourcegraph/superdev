@@ -9,6 +9,7 @@ interface ThreadCardProps {
     name: string;
     content: string;
     status: ThreadStatus;
+    onClick?: () => void; // Add optional click handler
   };
   feedback: string;
   shareWithOthers: boolean;
@@ -46,7 +47,15 @@ const ThreadCard: React.FC<ThreadCardProps> = ({
   const isHighlighted = animationStarted && thread.id === 104 && streamingComplete;
 
   return (
-    <div className={`thread-card ${displayStatus} ${isHighlighted ? 'highlight-success' : ''}`}>
+    <div 
+      className={`thread-card ${displayStatus} ${isHighlighted ? 'highlight-success' : ''} ${thread.status === 'completed' && streamingComplete ? 'clickable-thread' : ''}`}
+      onClick={() => {
+        // Only trigger onClick for completed threads after streaming is complete
+        if (thread.status === 'completed' && streamingComplete && thread.onClick) {
+          thread.onClick();
+        }
+      }}
+    >
       <div className="thread-header">
         <h3>{thread.name}</h3>
         {/* Show status decal only after streaming is complete */}
